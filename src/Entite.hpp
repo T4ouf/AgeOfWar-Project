@@ -2,7 +2,7 @@
 
 #include "Enums.h"
 
-Class Entite{
+class Entite{
 
 private:
 	int m_vie;
