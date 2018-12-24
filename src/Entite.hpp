@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Enums.h"
+#include "Enums.hpp"
 
 class Entite{
 
@@ -13,4 +13,4 @@ public:
 	Entite(int vie, EnumEquipe equipe);
 	~Entite();
 	
-}
+};
