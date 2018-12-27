@@ -1,7 +1,7 @@
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11
-OBJ = main.o Joueur.o Entite.o Unite.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
+OBJ = main.o Application.o Joueur.o Entite.o Unite.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
 
 
 %.o: %.cpp

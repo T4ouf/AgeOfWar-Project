@@ -10,7 +10,7 @@ private:
 	EnumEquipe m_equipe;
 
 public:
-	Entite(int vie, EnumEquipe equipe);
-	~Entite();
+	Entite(int vie, EnumEquipe equipe):m_vie(vie),  m_x(positionTour(equipe)), m_equipe(equipe){};
+	~Entite(){};
 	
 };

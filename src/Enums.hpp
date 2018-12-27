@@ -1,14 +1,18 @@
 #pragma once
 
+const unsigned int BASE_A=0;
+const unsigned int BASE_B=11;
+
 enum EnumEquipe{
-	Equipe1=1,
-	Equipe2=2
+	EquipeA=1,
+	EquipeB=2
 };
  
 
 enum EnumAction{
-	Avancer,
-	Attaquer
+	Vide = 0,
+	Avancer = 1,
+	Attaquer =2
 };
 
 

@@ -1,9 +1,9 @@
 #include "Enums.hpp"
 
 int positionTour(EnumEquipe e){
-	if(e==Equipe1){
-		return 0;
+	if(e==EquipeA){
+		return BASE_A;
 	}else{
-		return 11;
+		return BASE_B;
 	}
 }
