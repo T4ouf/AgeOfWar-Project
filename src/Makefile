@@ -1,10 +1,12 @@
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11
+
+DEPS= Plateau.hpp
 OBJ = main.o Application.o Joueur.o Entite.o Unite.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
 
 
-%.o: %.cpp
+%.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $< -c -o $@
 
 ProjetCPP: $(OBJ)

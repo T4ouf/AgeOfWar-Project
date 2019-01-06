@@ -3,7 +3,7 @@
 #include "Categorie.hpp"
 #include "Entite.hpp"
 #include "Enums.hpp"
-
+#include "Plateau.hpp"
 
 class Unite: public Entite{
 
@@ -14,8 +14,10 @@ private:
 
 	Categorie* m_categorie;
 
+	std::string m_nom;			//Correspond au nom de l'unité (pour l'affichage sur la console)
+
 	unsigned int prix;
-	unsigned int vieMax;	//Correspond à la vie max de l'unité / Les points de vie actuels de l'unité sont gérés au niveau de la classe Entite
+	unsigned int vieMax;		//Correspond à la vie max de l'unité / Les points de vie actuels de l'unité sont gérés au niveau de la classe Entite
 	unsigned int puissance; 	//représente les points d'attaque du sujet
 
 	unsigned int m_porteeMin;
@@ -23,6 +25,11 @@ private:
 
 public:
 
+	//Constructeur d'une unite
+	//en C++ le polymorphisme passe par des pointeurs
 	Unite(Categorie* categorie, EnumEquipe equipe);
+
+	//méthode d'attaque d'une unite (renvoit vrai si l'attaque est un succès, faux sinon)
+	bool Attaquer(Plateau_t p);
 
 };

@@ -3,19 +3,19 @@
 #include <string>
 #include "Enums.hpp"
 
-/** Classe qui représente la catégorie d'une unité (on utilise ici le design Pattern State)
+/** Classe abstraite qui représente la catégorie d'une unité (on utilise ici le design Pattern State)
  * @author 
  *
  */
 class Categorie{
 
+	//LES CATEGORIES NE SERONT INSTANCIE QU'UNE SEULE FOIS DANS L'APPLICATION
+
 private:
 
-	std::string m_nom;
-	
 protected:
 	//Méthode abstraite qui doit être redef dans les classes filles (chaque sous-classe gère son nommage)
-	virtual void setNom(std::string nom) = 0;	
+	//virtual void setNom(std::string nom) = 0;	
 
 public:
 

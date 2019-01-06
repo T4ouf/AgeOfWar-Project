@@ -7,5 +7,7 @@ Unite::Unite(Categorie* categorie, EnumEquipe equipe) : Entite(categorie->getVie
 
 	m_actionAlternative=categorie->getActionAlt();
 
+	m_nom = categorie->getNom() + "(" + getNomEquipe(equipe) + ")";
+
 	m_categorie = categorie;
 }
