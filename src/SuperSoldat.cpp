@@ -3,6 +3,19 @@
 #include "Unite.hpp"
 
 unsigned int SuperSoldat::ID = 0;
+SuperSoldat* SuperSoldat::instance=nullptr;
+
+SuperSoldat* SuperSoldat::getInstance()
+{
+    if (instance == 0)
+    {
+        instance = new SuperSoldat();
+    }
+
+    return instance;
+}
+
+
 
 SuperSoldat::SuperSoldat(){
 	ID = ID +1;
@@ -57,4 +70,9 @@ int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEqu
 		}
 	}
 	return positionActuelle;
+}
+
+
+Categorie* SuperSoldat::promotion(){
+	return SuperSoldat::getInstance();
 }

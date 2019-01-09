@@ -3,6 +3,17 @@
 #include "Unite.hpp"
 
 unsigned int Fantassin::ID = 0;
+Fantassin* Fantassin::clearinstance=nullptr;
+
+Fantassin* Fantassin::getInstance()
+{
+    if (instance == 0)
+    {
+        instance = new Fantassin();
+    }
+
+    return instance;
+}
 
 Fantassin::Fantassin(){
 	ID = ID +1;
@@ -57,4 +68,8 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		}
 	}
 	return positionActuelle;
+}
+
+Categorie* Fantassin::promotion(){
+	return Fantassin::getInstance();
 }

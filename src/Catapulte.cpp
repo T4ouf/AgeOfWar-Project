@@ -3,6 +3,17 @@
 #include "Unite.hpp"
 
 unsigned int Catapulte::ID = 0;
+Catapulte* Catapulte::instance=nullptr;
+
+Catapulte* Catapulte::getInstance()
+{
+    if (instance == 0)
+    {
+        instance = new Catapulte();
+    }
+
+    return instance;
+}
 
 Catapulte::Catapulte(){
 	ID = ID +1;
@@ -68,4 +79,8 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	}
 	
 	return positionActuelle;
+}
+
+Categorie* Catapulte::promotion(){
+	return Catapulte::getInstance();
 }

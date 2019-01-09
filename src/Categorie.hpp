@@ -36,6 +36,8 @@ public:
 	virtual unsigned int getPorteeMax()= 0;
 	virtual unsigned int getCaseSuppDegats() = 0;
 	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e)=0;
+	
+	virtual Categorie* promotion()=0;
 
 
 };

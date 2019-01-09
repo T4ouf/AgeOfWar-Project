@@ -4,6 +4,17 @@
 
 
 unsigned int Archer::ID = 0;
+Archer* Archer::instance=nullptr;
+
+Archer* Archer::getInstance()
+{
+    if (instance == 0)
+    {
+        instance = new Archer();
+    }
+
+    return instance;
+}
 
 Archer::Archer(){
 		ID = ID +1;
@@ -70,4 +81,8 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 	}
 	
 	return positionActuelle;
+}
+
+Categorie* Archer::promotion(){
+	return Archer::getInstance();
 }

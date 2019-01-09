@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Application.hpp"
+
 #include "Categorie.hpp"
 
 class Fantassin : public Categorie{
@@ -8,12 +8,17 @@ class Fantassin : public Categorie{
 private :
 
 	static unsigned int ID;
+	
+	static Fantassin* instance;
+	
 	Fantassin();
 	~Fantassin();
 
 	friend class _Application;
 
 public :
+
+	static Fantassin* getInstance();
 
 	std::string getNom() override;
 	EnumAction getAction1()override;
@@ -28,5 +33,7 @@ public :
 	unsigned int getPorteeMax() override;
 	unsigned int getCaseSuppDegats() override;
 	int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e) override;
+	
+	Categorie* promotion() override;
 
 };
