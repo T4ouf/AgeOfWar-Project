@@ -34,12 +34,10 @@ public:
 	//méthode d'attaque d'une unite (renvoit vrai si l'attaque est un succès, faux sinon)
 	bool Attaquer(Plateau_t& p);
 
-<<<<<<< HEAD
+
 	//Méthode de déplacement d'une unité (renvoit vrai si le déplacement est un succès, faux sinon)
 	bool Deplacer(Plateau_t& p);
 
 	bool Promotion();
 
-=======
->>>>>>> c5d80fca64e8a8976daac60de4478903142e2dce
 };

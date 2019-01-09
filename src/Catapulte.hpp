@@ -27,11 +27,6 @@ public :
 	unsigned int getPorteeMin() override;
 	unsigned int getPorteeMax() override;
 	unsigned int getCaseSuppDegats() override;
-	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e) override;
-
-	unsigned int getCaseSuppDegats() override;
-
-	//Méthode qui vérifie si une unité ennemie est à portée (et renvoit le numéro de la case à attaquer si c'est le cas (-1 sinon))
-	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction) override;
+	int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e) override;
 
 };

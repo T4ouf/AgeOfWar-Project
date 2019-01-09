@@ -1,5 +1,7 @@
 #include "Archer.hpp"
 #include "Enums.hpp"
+#include "Unite.hpp"
+
 
 unsigned int Archer::ID = 0;
 
@@ -50,18 +52,18 @@ unsigned int Archer::getCaseSuppDegats(){
 	return 0;
 }
 
-int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e){
+int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
-		for(int i=positionActuelle; i<TAILLE_TABLEAU; i+direction){
-			if(p.getCase(i).getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
+		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
 			}
 		}
 	}
 	else{
-		for(int i=positionActuelle; i>TAILLE_TABLEAU; i+direction){
-			if(p.getCase(i).getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+		for(unsigned int i=positionActuelle; i>TAILLE_PLATEAU; i--){
+			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
 			}
 		}

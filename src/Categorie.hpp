@@ -35,12 +35,7 @@ public:
 	virtual unsigned int getPorteeMin()= 0;
 	virtual unsigned int getPorteeMax()= 0;
 	virtual unsigned int getCaseSuppDegats() = 0;
-	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e)=0;
+	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e)=0;
 
-/*FCT A AJOUTER DANS TOUTES LES SOUS CLASSES*/
-	virtual unsigned int getCaseSuppDegats() = 0;
-
-	//Méthode qui vérifie si une unité ennemie est à portée (et renvoit le numéro de la case à attaquer si c'est le cas (-1 sinon))
-	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction) = 0;
 
 };

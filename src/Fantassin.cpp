@@ -1,5 +1,6 @@
 #include "Fantassin.hpp"
 #include "Enums.hpp"
+#include "Unite.hpp"
 
 unsigned int Fantassin::ID = 0;
 
@@ -45,13 +46,13 @@ unsigned int Fantassin::getCaseSuppDegats(){
 	return 0;
 }
 
-int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, int direction){
+int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 	if (e==EquipeA){
-		if(p.getCase(positionActuelle+getPorteeMin()==EquipeB){
+		if(p.getCase(positionActuelle+getPorteeMin())->getEquipe()==EquipeB){
 			return (positionActuelle+getPorteeMin());
 		}
 	}else{
-		if(p.getCase(positionActuelle-getPorteeMin()==EquipeA){
+		if(p.getCase(positionActuelle-getPorteeMin())->getEquipe()==EquipeA){
 			return (positionActuelle+getPorteeMin());
 		}
 	}

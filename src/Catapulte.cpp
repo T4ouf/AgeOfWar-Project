@@ -1,5 +1,6 @@
 #include "Catapulte.hpp"
 #include "Enums.hpp"
+#include "Unite.hpp"
 
 unsigned int Catapulte::ID = 0;
 
@@ -41,26 +42,26 @@ unsigned int Catapulte::getPorteeMax() {
 	return 3;
 }
 
-unsigned int Catapulte::Catapulte::getCaseSuppDegats(){
+unsigned int Catapulte::getCaseSuppDegats(){
 	return 1;
 }
 
-int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e){
+int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
-		for(int i=positionActuelle; i<TAILLE_TABLEAU; i+direction){
-			if(p.getCase(i).getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
+		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
-			}else if(p.getCase(positionActuelle+getPorteeMax()+1).getEquipe()==EquipeB){
+			}else if(p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB){
 				return positionActuelle+getPorteeMax()+1;
 			}
 		}
 	}
 	else{
-		for(int i=positionActuelle; i>TAILLE_TABLEAU; i+direction){
-			if(p.getCase(i).getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+		for(unsigned int i=positionActuelle; i>TAILLE_PLATEAU; i--){
+			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
-			}else if(p.getCase(positionActuelle-(getPorteeMax()+1)).getEquipe()==EquipeB){
+			}else if(p.getCase(positionActuelle-(getPorteeMax()+1))->getEquipe()==EquipeB){
 				return positionActuelle-(getPorteeMax()+1);
 			}
 		}
