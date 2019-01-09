@@ -5,14 +5,14 @@
 
 class SuperSoldat : public Categorie{
 
-private : 
-	
+private :
+
 	static unsigned int ID;
 	SuperSoldat();
 	~SuperSoldat();
 	friend class _Application;
 
-public : 
+public :
 
 	std::string getNom() override;
 	EnumAction getAction1()override;
@@ -22,9 +22,14 @@ public :
 	unsigned int getPrix() override;
 	unsigned int getVieMax() override;
 	unsigned int getPuissance() override;
-	
+
 	unsigned int getPorteeMin() override;
 	unsigned int getPorteeMax() override;
+
+	unsigned int getCaseSuppDegats() override;
+
+	//Méthode qui vérifie si une unité ennemie est à portée (et renvoit le numéro de la case à attaquer si c'est le cas (-1 sinon))
+	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction) override;
 
 };
 

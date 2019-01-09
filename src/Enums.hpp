@@ -15,8 +15,9 @@ enum EnumEquipe{
 	EquipeA=1,
 	EquipeB=2
 };
- 
+
 int positionTour(EnumEquipe e);
+int direction(EnumEquipe e);
 std::string getNomEquipe(EnumEquipe e);
 
 //////////////////////////////////////////

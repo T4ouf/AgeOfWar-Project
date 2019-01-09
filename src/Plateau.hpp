@@ -1,5 +1,6 @@
 #pragma once
 
+//#include <stdexcept>	//pour l'exception std::out_of_range
 #include <vector>
 
 #define TAILLE_PLATEAU 11
@@ -9,10 +10,10 @@ class Unite;
 
 typedef struct{
 
-	std::vector<Unite> casesUnite;
+	std::vector<Unite*> casesUnite;
 
-	bool VerifOK(unsigned int numCase){
-		return numCase<=TAILLE_PLATEAU;
-	}
+	void Init();
+	bool VerifOK(unsigned int numCase);
+	Unite* getCase(unsigned int numCase);
 
 }Plateau_t;

@@ -2,8 +2,8 @@
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11
 
-DEPS= Plateau.hpp
-OBJ = main.o Application.o Joueur.o Entite.o Unite.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
+DEPS =
+OBJ = main.o Application.o Joueur.o Entite.o Unite.o Plateau.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
 
 
 %.o: %.cpp $(DEPS)
@@ -17,6 +17,4 @@ ProjetCPP: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f *.o *~ core 
-
-
+	rm -f *.o *~ core

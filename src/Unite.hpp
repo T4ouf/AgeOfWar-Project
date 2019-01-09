@@ -20,6 +20,7 @@ private:
 	unsigned int vieMax;		//Correspond à la vie max de l'unité / Les points de vie actuels de l'unité sont gérés au niveau de la classe Entite
 	unsigned int puissance; 	//représente les points d'attaque du sujet
 
+	//Portee de l'unite (bornes comprises)
 	unsigned int m_porteeMin;
 	unsigned int m_porteeMax;
 
@@ -30,6 +31,11 @@ public:
 	Unite(Categorie* categorie, EnumEquipe equipe);
 
 	//méthode d'attaque d'une unite (renvoit vrai si l'attaque est un succès, faux sinon)
-	bool Attaquer(Plateau_t p);
+	bool Attaquer(Plateau_t& p);
+
+	//Méthode de déplacement d'une unité (renvoit vrai si le déplacement est un succès, faux sinon)
+	bool Deplacer(Plateau_t& p);
+
+	bool Promotion();
 
 };

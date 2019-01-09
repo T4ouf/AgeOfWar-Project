@@ -14,8 +14,14 @@ public:
 	Entite(int vie, EnumEquipe equipe):m_vie(vie),  m_x(positionTour(equipe)), m_equipe(equipe){};
 	~Entite(){};
 
+
+	//TODO => A IMPLEMENTER
+	int getVie();
+	int getX();
+	EnumEquipe getEquipe();
+
 	//renvoit vrai si l'entite meurt après avoir subi les dégats
 	bool subirDegats(unsigned int degats);
 
-	
+
 };
