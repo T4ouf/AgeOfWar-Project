@@ -34,6 +34,8 @@ public:
 	
 	virtual unsigned int getPorteeMin()= 0;
 	virtual unsigned int getPorteeMax()= 0;
+	virtual unsigned int getCaseSuppDegats() = 0;
+	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e)=0;
 
 
 };

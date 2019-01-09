@@ -26,7 +26,9 @@ public :
 	
 	unsigned int getPorteeMin() override;
 	unsigned int getPorteeMax() override;
+	unsigned int getCaseSuppDegats() override;
+	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e) override;
 
 };
 
-unsigned int Fantassin::ID = 0;
+

@@ -12,10 +12,10 @@ class _Application{
 
 public:
 	//On crée ici les singletons de categorie (que l'on initialisera via _Init())
-	Archer archer;
+	/*Archer archer;
 	Catapulte catapulte;
 	Fantassin fantassin; 
-	SuperSoldat super_soldat;
+	SuperSoldat super_soldat;*/
 
 	//fonctions qui commencent par _ sont les fonctions de l'application
 	void _Init();

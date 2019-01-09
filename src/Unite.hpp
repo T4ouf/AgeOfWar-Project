@@ -13,6 +13,7 @@ private:
 	EnumAction m_actionAlternative;	//Correspond à l'action 3 du tableau => ne se déclenche (après l'action 2) que si l'action 1 est impossible
 
 	Categorie* m_categorie;
+	
 
 	std::string m_nom;			//Correspond au nom de l'unité (pour l'affichage sur la console)
 
