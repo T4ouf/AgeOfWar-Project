@@ -13,6 +13,7 @@ private:
 	EnumAction m_actionAlternative;	//Correspond à l'action 3 du tableau => ne se déclenche (après l'action 2) que si l'action 1 est impossible
 
 	Categorie* m_categorie;
+	
 
 	std::string m_nom;			//Correspond au nom de l'unité (pour l'affichage sur la console)
 
@@ -33,9 +34,12 @@ public:
 	//méthode d'attaque d'une unite (renvoit vrai si l'attaque est un succès, faux sinon)
 	bool Attaquer(Plateau_t& p);
 
+<<<<<<< HEAD
 	//Méthode de déplacement d'une unité (renvoit vrai si le déplacement est un succès, faux sinon)
 	bool Deplacer(Plateau_t& p);
 
 	bool Promotion();
 
+=======
+>>>>>>> c5d80fca64e8a8976daac60de4478903142e2dce
 };

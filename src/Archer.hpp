@@ -2,6 +2,7 @@
 
 #include "Application.hpp"
 #include "Categorie.hpp"
+#include "Plateau.hpp"
 
 class Archer : public Categorie{
 
@@ -26,6 +27,8 @@ public :
 
 	unsigned int getPorteeMin() override;
 	unsigned int getPorteeMax() override;
+	unsigned int getCaseSuppDegats() override;
+	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction, EnumEquipe e) override;
 
 	unsigned int getCaseSuppDegats() override;
 
@@ -33,5 +36,3 @@ public :
 	int verifPortee(Plateau_t p, unsigned int positionActuelle, int direction) override;
 
 };
-
-unsigned int Archer::ID = 0;

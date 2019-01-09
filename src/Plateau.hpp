@@ -16,4 +16,6 @@ typedef struct{
 	bool VerifOK(unsigned int numCase);
 	Unite* getCase(unsigned int numCase);
 
+
+
 }Plateau_t;
