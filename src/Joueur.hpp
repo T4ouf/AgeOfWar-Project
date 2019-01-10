@@ -4,23 +4,27 @@
 
 #include "Enums.hpp"
 #include "Tour.hpp"
-#include "Unite.hpp"
 
+
+#define OR_INITIAL 10
+
+class Unite;
 
 class Joueur{
 
-private : 
+private :
 
     EnumEquipe m_equipe;
-    vector<Unite> m_listeUnite;
+    std::vector<Unite*> m_listeUnite;
     Tour m_tour;
 
     int m_piecesOr;
     bool m_ia;
-        
+
 public:
 
 	Joueur(EnumEquipe equipe, bool IA);
-	~Joueur();
+
+    void EnleveUnite(Unite* u);
 
 };

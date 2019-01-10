@@ -5,14 +5,16 @@
 class Entite{
 
 private:
-	int m_vie;
-	int m_x;
+	unsigned int m_vie;
+	unsigned int m_x;
 	EnumEquipe m_equipe;
 
 public:
 	//Le constructeur d'Entite gère la position initiale des objets en fonction de leur équipe
 	Entite(int vie, EnumEquipe equipe):m_vie(vie),  m_x(positionTour(equipe)), m_equipe(equipe){};
-	~Entite(){};
+	
+	//destructeur virtuel (pour le polymorphisme)
+	virtual ~Entite(){};
 
 
 	//TODO => A IMPLEMENTER
@@ -22,6 +24,9 @@ public:
 
 	//renvoit vrai si l'entite meurt après avoir subi les dégats
 	bool subirDegats(unsigned int degats);
+
+	//Gère la mort d'une entité
+	virtual void Mourir(Plateau_t& p);
 
 
 };

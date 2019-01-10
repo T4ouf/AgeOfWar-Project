@@ -15,6 +15,8 @@ typedef struct{
 	void Init();
 	bool VerifOK(unsigned int numCase);
 	Unite* getCase(unsigned int numCase);
+	bool EnleveUnite(unsigned int numCase);
+	bool AjouteUnite(unsigned int numCase, Unite* unite);
 
 
 
