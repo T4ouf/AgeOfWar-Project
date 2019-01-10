@@ -80,7 +80,7 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 		}
 	}
 	
-	return positionActuelle;
+	return -1;
 }
 
 Categorie* Archer::promotion(){

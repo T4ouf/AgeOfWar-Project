@@ -78,7 +78,7 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		}
 	}
 	
-	return positionActuelle;
+	return -1;
 }
 
 Categorie* Catapulte::promotion(){

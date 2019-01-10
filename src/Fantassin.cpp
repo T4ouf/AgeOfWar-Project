@@ -3,7 +3,7 @@
 #include "Unite.hpp"
 
 unsigned int Fantassin::ID = 0;
-Fantassin* Fantassin::clearinstance=nullptr;
+Fantassin* Fantassin::instance=nullptr;
 
 Fantassin* Fantassin::getInstance()
 {
@@ -67,7 +67,7 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 			return (positionActuelle+getPorteeMin());
 		}
 	}
-	return positionActuelle;
+	return -1;
 }
 
 Categorie* Fantassin::promotion(){

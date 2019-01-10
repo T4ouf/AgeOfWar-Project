@@ -69,7 +69,7 @@ int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEqu
 			return (positionActuelle+getPorteeMin());
 		}
 	}
-	return positionActuelle;
+	return -1;
 }
 
 
