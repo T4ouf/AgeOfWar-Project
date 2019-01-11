@@ -4,6 +4,7 @@
 
 #include "Enums.hpp"
 #include "Tour.hpp"
+#include "Categorie.hpp"
 
 
 #define OR_INITIAL 10
@@ -18,13 +19,15 @@ private :
     std::vector<Unite*> m_listeUnite;
     Tour m_tour;
 
-    int m_piecesOr;
+    unsigned int m_piecesOr;
     bool m_ia;
 
 public:
 
 	Joueur(EnumEquipe equipe, bool IA);
-
-    void EnleveUnite(Unite* u);
+	~Joueur();
+	bool recruter(Plateau_t p, Categorie* c);
+   	void EnleveUnite(Unite* u);
+   	void MAJPieces(int piece);
 
 };
