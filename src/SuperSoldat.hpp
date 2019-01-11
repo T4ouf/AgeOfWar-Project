@@ -8,19 +8,19 @@ class SuperSoldat : public Categorie{
 private :
 
 	static unsigned int ID;
-	
+
 	static SuperSoldat* instance;
-	
+
 	SuperSoldat();
-	~SuperSoldat();
-	
-	
+	virtual ~SuperSoldat();
+
+
 	friend class _Application;
 
 public :
 
-	static SuperSoldat* getInstance();		
-	
+	static SuperSoldat* getInstance();
+
 	std::string getNom() override;
 	EnumAction getAction1()override;
 	EnumAction getAction2() override;

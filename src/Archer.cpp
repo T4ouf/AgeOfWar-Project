@@ -17,7 +17,7 @@ Archer* Archer::getInstance()
 }
 
 Archer::Archer(){
-		ID = ID +1;
+	ID = ID +1;
 }
 
 Archer::~Archer(){

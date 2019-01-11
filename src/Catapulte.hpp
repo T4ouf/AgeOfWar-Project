@@ -12,13 +12,13 @@ private :
 	static Catapulte* instance;
 
 	Catapulte();
-	~Catapulte();
+	virtual ~Catapulte();
 
 	friend class _Application;
 
 public :
 
-	static Catapulte* getInstance();	
+	static Catapulte* getInstance();
 
 	std::string getNom() override;
 	EnumAction getAction1()override;

@@ -8,11 +8,11 @@ class Fantassin : public Categorie{
 private :
 
 	static unsigned int ID;
-	
+
 	static Fantassin* instance;
-	
+
 	Fantassin();
-	~Fantassin();
+	virtual ~Fantassin();
 
 	friend class _Application;
 
@@ -33,7 +33,7 @@ public :
 	unsigned int getPorteeMax() override;
 	unsigned int getCaseSuppDegats() override;
 	int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e) override;
-	
+
 	Categorie* promotion() override;
 
 };

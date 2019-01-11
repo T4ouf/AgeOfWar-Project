@@ -1,4 +1,5 @@
 #include "Fantassin.hpp"
+#include "SuperSoldat.hpp"
 #include "Enums.hpp"
 #include "Unite.hpp"
 
@@ -71,5 +72,5 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 }
 
 Categorie* Fantassin::promotion(){
-	return Fantassin::getInstance();
+	return SuperSoldat::getInstance();
 }

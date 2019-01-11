@@ -13,7 +13,7 @@ private :
 	static Archer* instance;
 
 	Archer();
-	~Archer();
+	virtual ~Archer();
 
 	friend class _Application;
 
@@ -21,7 +21,7 @@ private :
 
 public :
 
-	static Archer* getInstance();	
+	static Archer* getInstance();
 
 	std::string getNom() override;
 	EnumAction getAction1()override;
