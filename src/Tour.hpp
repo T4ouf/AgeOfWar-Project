@@ -10,12 +10,15 @@
 class Tour : public Entite{
 
 private :
+
+	int position;
 	//TODO faire les attributs
 	
 public : 
 	
 	Tour(EnumEquipe equipe);
 	~Tour();
+	int getPosition();
 
 
 };
