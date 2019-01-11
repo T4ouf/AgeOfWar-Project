@@ -19,7 +19,7 @@ Fantassin::Fantassin(){
 	ID = ID +1;
 }
 Fantassin::~Fantassin(){
-
+    delete instance;
 }
 
 

@@ -19,7 +19,7 @@ Catapulte::Catapulte(){
 	ID = ID +1;
 }
 Catapulte::~Catapulte(){
-
+    delete instance;
 }
 
 
@@ -77,7 +77,7 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 			}
 		}
 	}
-	
+
 	return -1;
 }
 

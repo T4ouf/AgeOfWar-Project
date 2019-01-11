@@ -21,7 +21,7 @@ SuperSoldat::SuperSoldat(){
 	ID = ID +1;
 }
 SuperSoldat::~SuperSoldat(){
-
+    delete instance;
 }
 
 

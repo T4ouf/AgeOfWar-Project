@@ -12,12 +12,10 @@ private:
 public:
 	//Le constructeur d'Entite gère la position initiale des objets en fonction de leur équipe
 	Entite(int vie, EnumEquipe equipe):m_vie(vie),  m_x(positionTour(equipe)), m_equipe(equipe){};
-	
+
 	//destructeur virtuel (pour le polymorphisme)
 	virtual ~Entite(){};
 
-
-	//TODO => A IMPLEMENTER
 	int getVie();
 	int getX();
 	EnumEquipe getEquipe();

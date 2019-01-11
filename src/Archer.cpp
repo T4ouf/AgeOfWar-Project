@@ -21,7 +21,7 @@ Archer::Archer(){
 }
 
 Archer::~Archer(){
-
+    delete instance;
 }
 
 std::string Archer::getNom(){
@@ -79,7 +79,7 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 			}
 		}
 	}
-	
+
 	return -1;
 }
 
