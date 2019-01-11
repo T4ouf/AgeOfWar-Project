@@ -13,9 +13,11 @@ bool Joueur::recruter(Plateau_t p, Categorie* c){
 	if (c->getPrix()> m_piecesOr){
 		return false;
 	}else if(p.getCase(m_tour.getPosition())==nullptr){
-		return false;
+		Unite u = Unite(c, m_equipe, this);
+		m_listeUnite.push_back(&u);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 void Joueur::EnleveUnite(Unite* u){
