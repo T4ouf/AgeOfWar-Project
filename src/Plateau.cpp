@@ -19,13 +19,23 @@ Unite* Plateau_t::getCase(unsigned int numCase){
 
 bool Plateau_t::EnleveUnite(unsigned int numCase){
 
-	//TODO
+	
+	if(casesUnite.at(numCase) != nullptr){
+	
+		casesUnite.at(numCase) = nullptr;
+		return true;
+	}
 	return false;
 }
 
 
 bool Plateau_t::AjouteUnite(unsigned int numCase, Unite* unite){
 
-	//TODO
+	
+	
+	if(casesUnite.at(numCase) == nullptr){
+		casesUnite.at(numCase) = unite;
+		return true;
+	}
 	return false;
 }
