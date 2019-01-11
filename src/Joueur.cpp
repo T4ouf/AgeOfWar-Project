@@ -31,3 +31,10 @@ void Joueur::EnleveUnite(Unite* u){
 }
 
 
+void Joueur::MAJPieces(int pieces){
+	if((int)m_piecesOr >= -pieces){
+		m_piecesOr+=pieces;
+	}
+}
+
+

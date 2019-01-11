@@ -28,5 +28,6 @@ public:
 	~Joueur();
 	bool recruter(Plateau_t p, Categorie* c);
    	void EnleveUnite(Unite* u);
+   	void MAJPieces(int piece);
 
 };
