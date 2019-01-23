@@ -14,8 +14,6 @@ private :
 	Fantassin();
 	virtual ~Fantassin();
 
-	friend class _Application;
-
 public :
 
 	static Fantassin* getInstance();

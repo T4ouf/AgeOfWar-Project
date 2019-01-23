@@ -25,6 +25,15 @@ public:
 	//en C++ le polymorphisme passe par des pointeurs
 	Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire);
 
+	//getter sur le nom
+	std::string getNom();
+
+	//getter sur la catégorie
+	Categorie* getCategorie();
+
+	//Prix d'une unite
+	unsigned int getPrix() override;
+
 	//méthode d'attaque d'une unite (renvoit vrai si l'attaque est un succès, faux sinon)
 	bool Attaquer(Plateau_t& p);
 
@@ -36,5 +45,14 @@ public:
 
 	//Gère la mort de l'unité (préviens le plateau et détruit l'objet)
 	void Mourir(Plateau_t& p) override;
+
+	//L'unité effectue son action principale
+	bool Action1(Plateau_t& p);
+
+	//L'unité effectue son action secondaire
+	bool Action2(Plateau_t& p);
+
+	//L'unité effectue son action alternative
+	bool ActionAlt(Plateau_t& p, bool SuccesAction1);
 
 };

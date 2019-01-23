@@ -1,4 +1,5 @@
 #include "Enums.hpp"
+#include <sstream>
 
 //////////////////////////////////////////
 //            ENUM EnumEquipe			//
@@ -9,6 +10,14 @@ int positionTour(EnumEquipe e){
 		return BASE_A;
 	}else{
 		return BASE_B;
+	}
+}
+
+int positionTourAdverse(EnumEquipe e){
+	if(e==EquipeA){
+		return BASE_B;
+	}else{
+		return BASE_A;
 	}
 }
 
@@ -41,3 +50,16 @@ std::string getNomEquipe(EnumEquipe e){
 //////////////////////////////////////////
 
 //rien pour l'instant...
+
+
+//////////////////////////////////////////
+//         Enum Affichage texte			//
+//////////////////////////////////////////
+
+std::string ColorerTexte(const std::string& texte,int couleur,int type){
+
+	std::stringstream sstm;
+	sstm << "\033[" << type << ";" << couleur << "m" << texte << "\033[0m";
+	return sstm.str();
+
+} 

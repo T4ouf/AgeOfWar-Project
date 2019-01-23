@@ -2,6 +2,7 @@
 #include "Enums.hpp"
 #include "Unite.hpp"
 
+#include <iostream>
 
 unsigned int Archer::ID = 0;
 Archer* Archer::instance=nullptr;
@@ -25,7 +26,7 @@ Archer::~Archer(){
 }
 
 std::string Archer::getNom(){
-	return "Archer"+ID;
+	return "A" + std::to_string(ID);
 }
 
 EnumAction Archer::getAction1(){
@@ -42,7 +43,7 @@ EnumAction Archer::getActionAlt(){
 
 
 unsigned int Archer::getPrix(){
-	return 10;
+	return 12;
 }
 unsigned int Archer::getVieMax() {
 	return 8;
@@ -66,14 +67,43 @@ unsigned int Archer::getCaseSuppDegats(){
 int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
+
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+
+			//case vide 
+			if(p.getCase(i)==nullptr){
+				//si on tombe sur la tour
+				if(i==(unsigned int)positionTourAdverse(e)){
+					return positionTourAdverse(e);
+				}
+
+				continue;
+			}
 			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
 			}
 		}
 	}
 	else{
-		for(unsigned int i=positionActuelle; i>TAILLE_PLATEAU; i--){
+
+		std::cout << "\npositionActuelle-3 = " << ((int)positionActuelle)-3 ;
+
+		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-3; i--){
+
+			//case vide
+			if(p.getCase(i)==nullptr){
+
+				//si on tombe sur la tour
+				std::cout << "\n\n\nIN\n" << i << "=" << positionTourAdverse(e);
+				if(i==(unsigned int)positionTourAdverse(e)){
+					return positionTourAdverse(e);
+				}
+
+				continue;
+			}
+
+			std::cout << "\n---------------------\nOUT0\n" <<  p.getCase(i)->getNom();
+			
 			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
 			}

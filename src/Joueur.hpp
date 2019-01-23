@@ -7,7 +7,7 @@
 #include "Categorie.hpp"
 
 
-#define OR_INITIAL 10
+#define OR_INITIAL 12
 
 class Unite;
 
@@ -26,8 +26,17 @@ public:
 
 	Joueur(EnumEquipe equipe, bool IA);
 	~Joueur();
-	bool recruter(Plateau_t p, Categorie* c);
-   	void EnleveUnite(Unite* u);
-   	void MAJPieces(int piece);
+	
+  bool recruter(Plateau_t& p, Categorie* c);
+ 	void EnleveUnite(Unite* u);
+ 	void MAJPieces(int piece);
+
+  bool EstIA(){return m_ia;};
+  unsigned int getArgent(){return m_piecesOr;}
+  Tour getTour() const {return m_tour;}
+  Tour* refTour(){return &m_tour;}
+
+  //Faire jouer le tour de ses unités
+  void  Jouer(Plateau_t &p);
 
 };

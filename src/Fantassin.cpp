@@ -3,6 +3,8 @@
 #include "Enums.hpp"
 #include "Unite.hpp"
 
+#include <iostream>
+
 unsigned int Fantassin::ID = 0;
 Fantassin* Fantassin::instance=nullptr;
 
@@ -25,7 +27,7 @@ Fantassin::~Fantassin(){
 
 
 std::string Fantassin::getNom() {
-	return "Fantassin"+ID;
+	return "F" + std::to_string(ID);
 }
 EnumAction Fantassin::getAction1(){
 	return Attaquer;
@@ -59,6 +61,22 @@ unsigned int Fantassin::getCaseSuppDegats(){
 }
 
 int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
+
+	std::cout << "\n\nINVerif : " <<positionActuelle+ direction(e)*getPorteeMin();
+
+	// Cas de la case vide devant l'unité
+	if(p.getCase(positionActuelle+ direction(e)*getPorteeMin())==nullptr){
+
+		std::cout << positionActuelle+ direction(e)*getPorteeMin();
+
+		//Si on est à portée de la tour => on l'attaque
+		if((positionActuelle+ direction(e)*getPorteeMin())==(unsigned int)positionTourAdverse(e)){
+			return positionTourAdverse(e);
+		}
+
+		return -1;
+	}
+
 	if (e==EquipeA){
 		if(p.getCase(positionActuelle+getPorteeMin())->getEquipe()==EquipeB){
 			return (positionActuelle+getPorteeMin());

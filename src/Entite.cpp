@@ -19,17 +19,6 @@ bool Entite::subirDegats(unsigned int degats){
         m_vie=0;
         return true;
     }
-
     m_vie=m_vie-degats;
     return false;
-}
-
-void Entite::Mourir(Plateau_t& p){
-
-    //pour éviter le warning de parameter unused
-    p.getCase(0);
-
-	//et on supprime l'unité
-	delete this;
-
 }

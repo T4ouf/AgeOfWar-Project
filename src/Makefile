@@ -1,6 +1,6 @@
 
 CXX=g++
-CXXFLAGS=-Wall -Wextra -std=c++11
+CXXFLAGS=-Wall -Wextra -Werror -std=c++11
 
 DEPS =
 OBJ = main.o Application.o Joueur.o Entite.o Unite.o Plateau.o Tour.o Enums.o Categorie.o Archer.o Catapulte.o Fantassin.o SuperSoldat.o
@@ -12,7 +12,7 @@ OBJ = main.o Application.o Joueur.o Entite.o Unite.o Plateau.o Tour.o Enums.o Ca
 ProjetCPP: $(OBJ)
 	$(CXX) $^ -o $@
 #Pour un build "propre" decommenter la ligne suivante
-	rm -f *o *~ core
+#	rm -f *o *~ core
 
 .PHONY: clean
 

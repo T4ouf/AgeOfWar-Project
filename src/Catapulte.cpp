@@ -24,7 +24,7 @@ Catapulte::~Catapulte(){
 
 
 std::string Catapulte::getNom() {
-	return "Catapulte"+ID;
+	return "C"+ std::to_string(ID);
 }
 EnumAction Catapulte::getAction1(){
 	return Attaquer;
@@ -61,6 +61,12 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 
 	if (e==EquipeA){
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+
+			//case vide => on passe à la suivante
+			if(p.getCase(i)==nullptr){
+				continue;
+			}
+
 			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
 			}else if(p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB){
@@ -70,6 +76,12 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	}
 	else{
 		for(unsigned int i=positionActuelle; i>TAILLE_PLATEAU; i--){
+
+			//case vide => on passe à la suivante
+			if(p.getCase(i)==nullptr){
+				continue;
+			}
+			
 			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
 			}else if(p.getCase(positionActuelle-(getPorteeMax()+1))->getEquipe()==EquipeB){

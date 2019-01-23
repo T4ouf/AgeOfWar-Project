@@ -6,19 +6,18 @@
 
 #define VIE_TOUR 100
 
-
 class Tour : public Entite{
 
 private :
-
-	int position;
-	//TODO faire les attributs
 	
 public : 
 	
 	Tour(EnumEquipe equipe);
 	~Tour();
-	int getPosition();
 
+	//Gère la mort de l'unité (préviens le plateau et détruit l'objet)
+	void Mourir(Plateau_t& p) override;
 
+	//getter du prix d'une tour = 0
+	unsigned int getPrix() override;
 };

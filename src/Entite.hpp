@@ -4,7 +4,7 @@
 
 class Entite{
 
-private:
+protected:
 	unsigned int m_vie;
 	unsigned int m_x;
 	EnumEquipe m_equipe;
@@ -16,6 +16,7 @@ public:
 	//destructeur virtuel (pour le polymorphisme)
 	virtual ~Entite(){};
 
+	//Les getters sur une entité
 	int getVie();
 	int getX();
 	EnumEquipe getEquipe();
@@ -24,7 +25,8 @@ public:
 	bool subirDegats(unsigned int degats);
 
 	//Gère la mort d'une entité
-	virtual void Mourir(Plateau_t& p);
+	virtual void Mourir(Plateau_t& p) =0;
+	virtual unsigned int getPrix() =0;
 
 
 };

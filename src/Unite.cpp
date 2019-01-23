@@ -1,6 +1,9 @@
 #include "Unite.hpp"
 #include "Fantassin.hpp"
+#include "SuperSoldat.hpp"
 #include "Joueur.hpp"
+
+#include <iostream>
 
 Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : Entite(categorie->getVieMax(),equipe){
 
@@ -11,9 +14,9 @@ Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : En
 
 	m_actionAlternative=categorie->getActionAlt();
 
-	m_nom = categorie->getNom() + "(" + getNomEquipe(equipe) + ")";
-
 	m_categorie = categorie;
+
+	m_nom = categorie->getNom();
 }
 
 /**
@@ -27,25 +30,88 @@ bool Unite::Attaquer(Plateau_t& p){
 		return false;
 	}
 	else{
-		Unite* cible = p.getCase(m_categorie->verifPortee(p, getX(),getEquipe()));
+		Entite* cible = p.getCase(m_categorie->verifPortee(p, getX(),getEquipe()));
 
+		//S'il faut attaquer une case vide => soit c'est une tour soit c'est une case adjacente qu'il faut attaquer
+		if(cible==nullptr){
+
+			if(m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_A){
+
+				//si la tour n'a plus de vie...
+				if(p.tourA->subirDegats(m_categorie->getPuissance())){
+
+					//...alors elle meurt
+					p.tourA->Mourir(p);
+
+				}
+
+			}
+			else if (m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_B){
+
+				//Si la tour n'a plus de vie...
+				if(p.tourB->subirDegats(m_categorie->getPuissance())){
+					///... alors elle meurt
+					p.tourB->Mourir(p);
+
+				}
+			}
+			else{
+				//rien à faire
+			}
+
+		}
 		//si la cible meurt dans l'attaque
-		if(cible->subirDegats(m_categorie->getPuissance())){
+		else if(cible->subirDegats(m_categorie->getPuissance())){
+
+			//On récupère l'argent de la mort de l'unité
+			m_proprietaire->MAJPieces(cible->getPrix()/2);
+
+			//La cible meurt
 			cible->Mourir(p);
 
 			if(m_categorie==Fantassin::getInstance()){
 				Promotion();
 			}
 
-			m_proprietaire->MAJPieces(m_categorie->getPrix()/2);
-
 		}
 
 		for(unsigned int i=1; i<=m_categorie->getCaseSuppDegats();i++){
 			Unite* cible = p.getCase(m_categorie->verifPortee(p, getX(),getEquipe())+(i*direction(getEquipe())));
 
+			//S'il faut attaquer une case vide => c'est une tour
+			if(cible==nullptr){
+
+				if(m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_A){
+
+					//si la tour n'a plus de vie...
+					if(p.tourA->subirDegats(m_categorie->getPuissance())){
+
+						//...alors elle meurt
+						p.tourA->Mourir(p);
+
+					}
+
+				}
+				else if (m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_B){
+
+					//Si la tour n'a plus de vie...
+					if(p.tourB->subirDegats(m_categorie->getPuissance())){
+						///... alors elle meurt
+						p.tourB->Mourir(p);
+
+					}
+				}
+				else{
+					//rien à faire
+				}
+
+			}
 			//si la cible (dégats collatéraux) meurt dans l'attaque
-			if(cible->subirDegats(m_categorie->getPuissance())){
+			else if(cible->subirDegats(m_categorie->getPuissance())){
+
+				//On récupère l'argent de la mort de l'unité
+				m_proprietaire->MAJPieces(cible->getPrix()/2);
+				
 				cible->Mourir(p);
 
 				//On verif la promotion
@@ -53,7 +119,6 @@ bool Unite::Attaquer(Plateau_t& p){
 					Promotion();
 				}
 
-				m_proprietaire->MAJPieces(m_categorie->getPrix()/2);
 			}
 
 		}
@@ -73,11 +138,14 @@ bool Unite::Deplacer(Plateau_t& p){
 		}
 		else{
 
+
+
 			//Si la place est libre => on se déplace
-			if((p.getCase(getX())+1)==nullptr){
+			if(p.getCase(getX()+1)==nullptr){
 
 				p.EnleveUnite(getX());
-				p.AjouteUnite(getX()+1,this);
+				m_x += direction(m_equipe);
+				p.AjouteUnite(getX(),this);
 
 				return true;
 			}
@@ -97,10 +165,11 @@ bool Unite::Deplacer(Plateau_t& p){
 		else{
 
 			//Si la place est libre => on se déplace
-			if((p.getCase(getX())-1)==nullptr){
+			if(p.getCase(getX()-1)==nullptr){
 
 				p.EnleveUnite(getX());
-				p.AjouteUnite(getX()-1,this);
+				m_x += direction(m_equipe);
+				p.AjouteUnite(getX(),this);
 
 				return true;
 			}
@@ -139,4 +208,70 @@ void Unite::Mourir(Plateau_t& p){
 	//et on supprime l'unité
 	delete this;
 
+}
+
+//getter sur le nom
+std::string Unite::getNom(){return m_nom;}
+
+//getter sur la catégorie
+Categorie* Unite::getCategorie(){return m_categorie;}
+
+//getter sur le prix de l'unité
+unsigned int Unite::getPrix(){return m_categorie->getPrix();}
+
+//L'unité effectue son action principale
+bool Unite::Action1(Plateau_t& p){
+	
+	switch (m_actions[0]){
+		case EnumAction::Attaquer : return this->Attaquer(p);
+		case EnumAction::Avancer : 	return this->Deplacer(p);
+		case EnumAction::Vide :		break;
+	}
+
+	return false;
+
+}
+
+//L'unité effectue son action secondaire
+bool Unite::Action2(Plateau_t& p){
+
+	switch (m_actions[1]){
+		case EnumAction::Attaquer : return this->Attaquer(p);
+		case EnumAction::Avancer : 	return this->Deplacer(p);
+		case EnumAction::Vide : break;
+	}
+
+	return false;
+
+}
+
+//L'unité effectue son action alternative
+bool Unite::ActionAlt(Plateau_t& p, bool SuccesAction1){
+
+
+	if(SuccesAction1){
+
+		if(m_categorie==SuperSoldat::getInstance()){
+			switch (m_actionAlternative){
+				case EnumAction::Attaquer : return this->Attaquer(p);
+
+				case EnumAction::Avancer : return this->Deplacer(p);
+
+				case EnumAction::Vide : break;
+			}
+		}
+
+	}
+	else{
+		switch (m_actionAlternative){
+			case EnumAction::Attaquer : return this->Attaquer(p);
+
+			case EnumAction::Avancer : return this->Deplacer(p);
+
+			case EnumAction::Vide : break;
+		}
+	}
+	
+
+	return false;
 }

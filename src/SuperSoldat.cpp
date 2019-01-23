@@ -26,7 +26,7 @@ SuperSoldat::~SuperSoldat(){
 
 
 std::string SuperSoldat::getNom() {
-	return "SuperSoldat"+ID;
+	return "S" + std::to_string(ID);
 }
 EnumAction SuperSoldat::getAction1(){
 	return Attaquer;
@@ -60,6 +60,12 @@ unsigned int SuperSoldat::getCaseSuppDegats(){
 }
 
 int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
+
+	// Cas de la case vide devant l'unité
+	if(p.getCase(positionActuelle + direction(e)*getPorteeMin())==nullptr){
+		return -1;
+	}
+
 	if (e==EquipeA){
 		if(p.getCase(positionActuelle+getPorteeMin())->getEquipe()==EquipeB){
 			return (positionActuelle+getPorteeMin());
