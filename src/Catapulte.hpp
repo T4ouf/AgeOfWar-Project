@@ -35,5 +35,6 @@ public :
 	int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e) override;
 
 	Categorie* promotion() override;
+	std::string genNom() override;
 
 };

@@ -18,7 +18,7 @@ Archer* Archer::getInstance()
 }
 
 Archer::Archer(){
-	ID = ID +1;
+
 }
 
 Archer::~Archer(){
@@ -115,4 +115,11 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 
 Categorie* Archer::promotion(){
 	return Archer::getInstance();
+}
+
+
+std::string Archer::genNom(){
+	ID = ID+1;
+	std::string nom = "A"+std::to_string(ID);
+	return nom;
 }

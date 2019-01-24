@@ -18,7 +18,7 @@ SuperSoldat* SuperSoldat::getInstance()
 
 
 SuperSoldat::SuperSoldat(){
-	ID = ID +1;
+
 }
 SuperSoldat::~SuperSoldat(){
     delete instance;
@@ -81,4 +81,11 @@ int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEqu
 
 Categorie* SuperSoldat::promotion(){
 	return SuperSoldat::getInstance();
+}
+
+
+std::string SuperSoldat::genNom(){
+	ID = ID+1;
+	std::string nom = "S"+std::to_string(ID);
+	return nom;
 }

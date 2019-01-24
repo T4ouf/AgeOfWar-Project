@@ -38,6 +38,9 @@ public:
 	virtual int verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e)=0;
 
 	virtual Categorie* promotion()=0;
+	
+	virtual std::string genNom() = 0; 
+	
 
 
 };

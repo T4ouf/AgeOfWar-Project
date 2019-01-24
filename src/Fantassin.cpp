@@ -19,7 +19,7 @@ Fantassin* Fantassin::getInstance()
 }
 
 Fantassin::Fantassin(){
-	ID = ID +1;
+
 }
 Fantassin::~Fantassin(){
     delete instance;
@@ -91,4 +91,10 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 
 Categorie* Fantassin::promotion(){
 	return SuperSoldat::getInstance();
+}
+
+std::string Fantassin::genNom(){
+	ID = ID+1;
+	std::string nom = "F"+std::to_string(ID);
+	return nom;
 }

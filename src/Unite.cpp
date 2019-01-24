@@ -16,7 +16,7 @@ Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : En
 
 	m_categorie = categorie;
 
-	m_nom = categorie->getNom();
+	m_nom = categorie->genNom();
 }
 
 /**

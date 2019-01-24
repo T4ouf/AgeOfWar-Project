@@ -16,7 +16,7 @@ Catapulte* Catapulte::getInstance()
 }
 
 Catapulte::Catapulte(){
-	ID = ID +1;
+	
 }
 Catapulte::~Catapulte(){
     delete instance;
@@ -95,4 +95,10 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 
 Categorie* Catapulte::promotion(){
 	return Catapulte::getInstance();
+}
+
+std::string Catapulte::genNom(){
+	ID = ID+1;
+	std::string nom = "C"+std::to_string(ID);
+	return nom;
 }
