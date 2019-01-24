@@ -79,16 +79,16 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 
 				continue;
 			}
-			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
+			else if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
 			}
 		}
 	}
 	else{
 
-		std::cout << "\npositionActuelle-3 = " << ((int)positionActuelle)-3 ;
+		std::cout << "\npositionActuelle-3 = " << ((int)positionActuelle)-getPorteeMax();
 
-		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-3; i--){
+		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
 
 			//case vide
 			if(p.getCase(i)==nullptr){
@@ -102,9 +102,9 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 				continue;
 			}
 
-			std::cout << "\n---------------------\nOUT0\n" <<  p.getCase(i)->getNom();
+			//std::cout << "\n---------------------\nOUT0\n" <<  p.getCase(i)->getNom();
 			
-			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+			else if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
 			}
 		}

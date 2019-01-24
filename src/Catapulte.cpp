@@ -63,11 +63,11 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
 
 			//case vide => on passe à la suivante
-			if(p.getCase(i)==nullptr){
+			if(p.getCase(i)==nullptr || p.getCase(positionActuelle+getPorteeMax()+1)==nullptr){
 				continue;
+				
 			}
-
-			if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
+			else if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
 				return i;
 			}else if(p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB){
 				return positionActuelle+getPorteeMax()+1;
@@ -75,14 +75,14 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		}
 	}
 	else{
-		for(unsigned int i=positionActuelle; i>TAILLE_PLATEAU; i--){
+		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
 
 			//case vide => on passe à la suivante
-			if(p.getCase(i)==nullptr){
+			if(p.getCase(i)==nullptr || p.getCase(positionActuelle-(getPorteeMax()+1))==nullptr){
 				continue;
 			}
 			
-			if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+			else if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
 				return i;
 			}else if(p.getCase(positionActuelle-(getPorteeMax()+1))->getEquipe()==EquipeB){
 				return positionActuelle-(getPorteeMax()+1);
