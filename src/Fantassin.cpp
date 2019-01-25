@@ -63,9 +63,8 @@ unsigned int Fantassin::getCaseSuppDegats(){
 int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
-
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
-		
+			
 			//case vide => on passe à la suivante
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
@@ -77,22 +76,25 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		}
 	}
 	else if (e==EquipeB){
-
-		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
-	
+		
+		
+		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax()-1; i--){
 			if(((int)positionActuelle)-(int)getPorteeMax()<0){
 			return -1;
 			}
 			
 			//case vide => on passe à la suivante
-			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
+			if( (p.getCase(i)!=nullptr)  
+				&& (p.getCase(i)->getEquipe()==EquipeA )&& i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
 				return i;
 				
 			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){
 				return BASE_A;
 			}
+
 		}
 	}
+
 
 	return -1;
 }
