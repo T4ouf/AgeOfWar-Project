@@ -62,30 +62,38 @@ unsigned int Fantassin::getCaseSuppDegats(){
 
 int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
-	std::cout << "\n\nINVerif : " <<positionActuelle+ direction(e)*getPorteeMin();
-
-	// Cas de la case vide devant l'unité
-	if(p.getCase(positionActuelle+ direction(e)*getPorteeMin())==nullptr){
-
-		std::cout << positionActuelle+ direction(e)*getPorteeMin();
-
-		//Si on est à portée de la tour => on l'attaque
-		if((positionActuelle+ direction(e)*getPorteeMin())==(unsigned int)positionTourAdverse(e)){
-			return positionTourAdverse(e);
-		}
-
-		return -1;
-	}
-
 	if (e==EquipeA){
-		if(p.getCase(positionActuelle+getPorteeMin())->getEquipe()==EquipeB){
-			return (positionActuelle+getPorteeMin());
-		}
-	}else{
-		if(p.getCase(positionActuelle-getPorteeMin())->getEquipe()==EquipeA){
-			return (positionActuelle+getPorteeMin());
+
+		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+		
+			//case vide => on passe à la suivante
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
+				return i;
+				
+			}
+			else if ((p.getCase(i)==nullptr) && (i==BASE_B)){
+				return BASE_B;
+			}
 		}
 	}
+	else if (e==EquipeB){
+
+		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
+	
+			if(((int)positionActuelle)-(int)getPorteeMax()<0){
+			return -1;
+			}
+			
+			//case vide => on passe à la suivante
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
+				return i;
+				
+			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){
+				return BASE_A;
+			}
+		}
+	}
+
 	return -1;
 }
 

@@ -69,43 +69,31 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 	if (e==EquipeA){
 
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
-
-			//case vide 
-			if(p.getCase(i)==nullptr){
-				//si on tombe sur la tour
-				if(i==(unsigned int)positionTourAdverse(e)){
-					return positionTourAdverse(e);
-				}
-
-				continue;
-			}
-			else if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
+		
+			//case vide => on passe à la suivante
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
+				
+			}
+			else if ((p.getCase(i)==nullptr) && (i==BASE_B)){
+				return BASE_B;
 			}
 		}
 	}
-	else{
-
-		std::cout << "\npositionActuelle-3 = " << ((int)positionActuelle)-getPorteeMax();
+	else if (e==EquipeB){
 
 		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
-
-			//case vide
-			if(p.getCase(i)==nullptr){
-
-				//si on tombe sur la tour
-				std::cout << "\n\n\nIN\n" << i << "=" << positionTourAdverse(e);
-				if(i==(unsigned int)positionTourAdverse(e)){
-					return positionTourAdverse(e);
-				}
-
-				continue;
+	
+			if(((int)positionActuelle)-(int)getPorteeMax()<0){
+			return -1;
 			}
-
-			//std::cout << "\n---------------------\nOUT0\n" <<  p.getCase(i)->getNom();
 			
-			else if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+			//case vide => on passe à la suivante
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
 				return i;
+				
+			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){
+				return BASE_A;
 			}
 		}
 	}

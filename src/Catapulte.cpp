@@ -2,6 +2,8 @@
 #include "Enums.hpp"
 #include "Unite.hpp"
 
+#include <iostream>
+
 unsigned int Catapulte::ID = 0;
 Catapulte* Catapulte::instance=nullptr;
 
@@ -61,31 +63,43 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 
 	if (e==EquipeA){
 		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
-
+		std::cout<<"min : "<< (i>=(positionActuelle + getPorteeMin())) << " max : "<<(i<= (positionActuelle + getPorteeMax()))<<std::endl;
 			//case vide => on passe à la suivante
-			if(p.getCase(i)==nullptr || p.getCase(positionActuelle+getPorteeMax()+1)==nullptr){
-				continue;
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
+				return i;
 				
 			}
-			else if(p.getCase(i)->getEquipe()==EquipeB && i>=getPorteeMin() && i<=getPorteeMax()){
-				return i;
-			}else if(p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB){
-				return positionActuelle+getPorteeMax()+1;
+			else if((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)!=nullptr)&& (p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB)){
+				return positionActuelle+getPorteeMax();
+				
+			}else if ((p.getCase(i)==nullptr) && (i==BASE_B)){
+				return BASE_B;
+			}else if ((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)==nullptr) && ( positionActuelle+getPorteeMax()+1 ==BASE_B)){
+				return positionActuelle+getPorteeMax();
 			}
 		}
 	}
-	else{
+	else if (e==EquipeB){
 		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
-
-			//case vide => on passe à la suivante
-			if(p.getCase(i)==nullptr || p.getCase(positionActuelle-(getPorteeMax()+1))==nullptr){
-				continue;
+	
+			if(((int)positionActuelle)-(int)getPorteeMax()<0){
+			return -1;
 			}
 			
-			else if(p.getCase(i)->getEquipe()==EquipeA && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle - getPorteeMax())){
+			//case vide => on passe à la suivante
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
 				return i;
-			}else if(p.getCase(positionActuelle-(getPorteeMax()+1))->getEquipe()==EquipeB){
-				return positionActuelle-(getPorteeMax()+1);
+				
+			}
+			else if( (((int)positionActuelle-(int)getPorteeMax()-1)>=0)
+			&&(p.getCase((int)positionActuelle-(int)getPorteeMax()-1)!=nullptr)
+			&& (p.getCase((int)positionActuelle-(int)getPorteeMax()-1)->getEquipe()==EquipeA)){
+				return positionActuelle-getPorteeMax();
+				
+			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){
+				return BASE_A;
+			}else if (((int)positionActuelle-(int)getPorteeMax()-1>=0)&&(p.getCase((int)positionActuelle-(int)getPorteeMax()-1)==nullptr) && ( (int)positionActuelle-(int)getPorteeMax()-1 ==BASE_A)){
+				return positionActuelle-getPorteeMax();
 			}
 		}
 	}
