@@ -46,6 +46,7 @@ bool Plateau_t::AjouteUnite(unsigned int numCase, Unite* unite){
 	return false;
 }
 
+
 std::string Plateau_t::decalChateau(size_t decalage, std::string chateau){
 
 	std::stringstream res;
@@ -146,13 +147,15 @@ std::string Plateau_t::toString(){
 			}
 			else if(getCase(i)->getEquipe()==EquipeA){
 
-				sstm  << ColorerTexte(getCase(i)->getNom(),Gras,COULEUR_EQUIPE_A);
-				taille += getCase(i)->getNom().size();
+				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
+				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_A);
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 3;
 
 			}
 			else if(getCase(i)->getEquipe()==EquipeB){
-				sstm  << ColorerTexte(getCase(i)->getNom(),Gras,COULEUR_EQUIPE_B);
-				taille += getCase(i)->getNom().size();
+				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
+				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_B);
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 3;
 			}
 
 		}

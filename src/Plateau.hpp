@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-
 #define TAILLE_PLATEAU 11
 
 //Pour eviter les inclusions multiples
@@ -20,7 +19,9 @@ typedef struct Plateau{
 
 	void Init(Tour* tourJ1, Tour* tourJ2);
 	bool VerifOK(unsigned int numCase);
+
 	Unite* getCase(unsigned int numCase);
+
 	bool EnleveUnite(unsigned int numCase);
 	bool AjouteUnite(unsigned int numCase, Unite* unite);
 

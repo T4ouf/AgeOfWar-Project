@@ -7,7 +7,7 @@
 #include "Categorie.hpp"
 
 
-#define OR_INITIAL 12
+#define OR_INITIAL 20
 
 class Unite;
 

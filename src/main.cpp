@@ -70,12 +70,12 @@ int main(){
 		}
 		else{
 			//Gain de 8 pièces en début de tour
-			J2.MAJPieces(8);
+			//J2.MAJPieces(8);
 			Affiche_Joueur2();
 			std::cout << '\n' << plateau.toString();
 			
 			if(J2.EstIA()){
-				int actionIA = tirage(0,2);
+				int actionIA = 2;//tirage(0,2);
 
 				//On ne peut agir que si la case est libre
 				if(plateau.getCase(BASE_B)==nullptr){
@@ -86,7 +86,6 @@ int main(){
 					if(actionIA==0){
 						
 						bool OK = J2.recruter(plateau,Catapulte::getInstance());
-
 						if(!OK){
 							bool OK2 = J2.recruter(plateau,Archer::getInstance());
 

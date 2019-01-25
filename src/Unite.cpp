@@ -1,6 +1,7 @@
 #include "Unite.hpp"
 #include "Fantassin.hpp"
 #include "SuperSoldat.hpp"
+#include "Catapulte.hpp"
 #include "Joueur.hpp"
 
 #include <iostream>
@@ -24,107 +25,156 @@ Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : En
  *
  */
 bool Unite::Attaquer(Plateau_t& p){
+	
+	bool succesAttaque = false;
+
+	int caseCible = m_categorie->verifPortee(p, getX(),getEquipe());
 
 	//Si pas d'unité adverse à portée..
-	if( m_categorie->verifPortee(p, getX(),getEquipe())==-1){
+	if(caseCible==-1){
 		return false;
 	}
 	else{
-		Entite* cible = p.getCase(m_categorie->verifPortee(p, getX(),getEquipe()));
 
-		//S'il faut attaquer une case vide => soit c'est une tour soit c'est une case adjacente qu'il faut attaquer
-		if(cible==nullptr){
+		std::cout << "/////////\n/////////\nDANS LA FONCTION ATTAQUER POUR L'UNITE : " << m_nom << "\n/////////\n***********\n";
 
-			if(m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_A){
+		//Si c'est une case vide => c'est la base adverse
+		if(p.getCase(caseCible)==nullptr){
 
-				//si la tour n'a plus de vie...
-				if(p.tourA->subirDegats(m_categorie->getPuissance())){
 
-					//...alors elle meurt
-					p.tourA->Mourir(p);
+			//si c'est bien une tour que l'on attaque (éviter le cas d'attaque d'une case vide avec la catapulte)
+			if(caseCible == positionTourAdverse(m_equipe)){
 
-				}
+				//On récupère la base adverse
+				Tour* tourAdverse;
 
-			}
-			else if (m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_B){
-
-				//Si la tour n'a plus de vie...
-				if(p.tourB->subirDegats(m_categorie->getPuissance())){
-					///... alors elle meurt
-					p.tourB->Mourir(p);
-
-				}
-			}
-			else{
-				//rien à faire
-			}
-
-		}
-		//si la cible meurt dans l'attaque
-		else if(cible->subirDegats(m_categorie->getPuissance())){
-
-			//On récupère l'argent de la mort de l'unité
-			m_proprietaire->MAJPieces(cible->getPrix()/2);
-
-			//La cible meurt
-			cible->Mourir(p);
-
-			if(m_categorie==Fantassin::getInstance()){
-				Promotion();
-			}
-
-		}
-
-		for(unsigned int i=1; i<=m_categorie->getCaseSuppDegats();i++){
-			Unite* cible = p.getCase(m_categorie->verifPortee(p, getX(),getEquipe())+(i*direction(getEquipe())));
-
-			//S'il faut attaquer une case vide => c'est une tour
-			if(cible==nullptr){
-
-				if(m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_A){
-
-					//si la tour n'a plus de vie...
-					if(p.tourA->subirDegats(m_categorie->getPuissance())){
-
-						//...alors elle meurt
-						p.tourA->Mourir(p);
-
-					}
-
-				}
-				else if (m_categorie->verifPortee(p, getX(),getEquipe()) == BASE_B){
-
-					//Si la tour n'a plus de vie...
-					if(p.tourB->subirDegats(m_categorie->getPuissance())){
-						///... alors elle meurt
-						p.tourB->Mourir(p);
-
-					}
+				if(m_equipe==EquipeA){
+					tourAdverse = p.tourB;
 				}
 				else{
-					//rien à faire
+					tourAdverse = p.tourA;
+				}
+				
+
+				//On lui fait subir des dégats et on stocke si la tour meurt ou non
+				bool mort = tourAdverse->subirDegats(m_categorie->getPuissance());
+
+				//si la tour est morte => on tue l'objet
+				if(mort){
+					tourAdverse->Mourir(p);
 				}
 
+					//L'attaque est un succès !
+					succesAttaque=true;
 			}
-			//si la cible (dégats collatéraux) meurt dans l'attaque
-			else if(cible->subirDegats(m_categorie->getPuissance())){
+			
+		}
+		//sinon c'est une cible adverse
+		else{
+
+			//On récupère la cible adverse
+			Unite* cible = p.getCase(caseCible);
+
+			//On lui fait subir des dégats et on stocke si la cible meurt ou non
+			bool mort = cible->subirDegats(m_categorie->getPuissance());
+
+			//si la cible est morte => on tue l'objet
+			if(mort){
 
 				//On récupère l'argent de la mort de l'unité
 				m_proprietaire->MAJPieces(cible->getPrix()/2);
 				
+				//on tue la cible
 				cible->Mourir(p);
 
-				//On verif la promotion
+				//On verif la promotion de l'unité
 				if(m_categorie==Fantassin::getInstance()){
 					Promotion();
 				}
 
 			}
 
+			//L'attaque est un succès !
+			succesAttaque=true;
+
 		}
 
-		return true;
+
+		//si notre unité est une catapulte, on attaque une cible supplémentaire
+		if(m_categorie==Catapulte::getInstance()){
+
+			//on récupère la case supplémentaire à attaquer
+			int caseSupplementaire = (int)caseCible + direction(getEquipe());
+
+			//si c'est en dehors du tableau => on sort...
+			if(caseSupplementaire < 0 || caseSupplementaire > TAILLE_PLATEAU){
+				return false;
+			}
+
+			//Si c'est une case vide => c'est la base adverse
+			if(p.getCase(caseCible)==nullptr){
+
+				//si c'est bien une tour que l'on attaque (éviter le cas d'attaque d'une case vide avec la catapulte)
+				if(caseCible == positionTourAdverse(m_equipe)){
+
+					//On récupère la base adverse
+					Tour* tourAdverse;
+
+					if(m_equipe==EquipeA){
+						tourAdverse = p.tourB;
+					}
+					else{
+						tourAdverse = p.tourA;
+					}
+
+
+					//On lui fait subir des dégats et on stocke si la tour meurt ou non
+					bool mort = tourAdverse->subirDegats(m_categorie->getPuissance());
+
+					//si la tour est morte => on tue l'objet
+					if(mort){
+						tourAdverse->Mourir(p);
+					}
+
+					//L'attaque est un succès !
+					succesAttaque=true;
+				}
+				
+			}
+			else{
+				//On récupère la cible adverse
+				Unite* cible = p.getCase(caseCible);
+
+				//On lui fait subir des dégats et on stocke si la cible meurt ou non
+				bool mort = cible->subirDegats(m_categorie->getPuissance());
+
+				//si la cible est morte => on tue l'objet
+				if(mort){
+
+					//On récupère l'argent de la mort de l'unité
+					m_proprietaire->MAJPieces(cible->getPrix()/2);
+					
+					//on tue la cible
+					cible->Mourir(p);
+
+					//On verif la promotion de l'unité
+					if(m_categorie==Fantassin::getInstance()){
+						Promotion();
+					}
+
+				}
+
+				//L'attaque est un succès !
+				succesAttaque=true;
+			}
+
+
+		}
+
+
 	}
+
+	return succesAttaque;
 
 }
 
@@ -190,6 +240,7 @@ bool Unite::Promotion(){
 	}
 	else{
 		m_categorie=m_categorie->promotion();
+		m_nom = m_categorie->genNom();
 		return true;
 	}
 

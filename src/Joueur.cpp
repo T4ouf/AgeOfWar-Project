@@ -31,7 +31,10 @@ void Joueur::EnleveUnite(Unite* u){
 	while(i<m_listeUnite.size()){
 		if(u == m_listeUnite.at(i)){
 			m_listeUnite.erase(m_listeUnite.begin()+i);
+			return;
 		}
+
+		i++;
 	}
 }
 

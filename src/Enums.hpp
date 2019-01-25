@@ -91,3 +91,10 @@ std::string ColorerTexte(const std::string& texte,int couleur,int type);
 
 #define COULEUR_EQUIPE_A BleuClair
 #define COULEUR_EQUIPE_B RougeClair
+
+//////////////////////////////////////////
+//         	Outils Utiles				//
+//////////////////////////////////////////
+
+unsigned int max(int i1, int i2);
+unsigned int min(int i1, int i2);
