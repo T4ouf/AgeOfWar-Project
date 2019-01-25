@@ -68,14 +68,14 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 
 	if (e==EquipeA){
 
-		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
+		for(unsigned int i=positionActuelle; i<=TAILLE_PLATEAU; i++){
 		
 			//case vide => on passe à la suivante
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
 				
 			}
-			else if ((p.getCase(i)==nullptr) && (i==BASE_B)){
+			else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
 				return BASE_B;
 			}
 		}
@@ -89,7 +89,7 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 			}
 			
 			//case vide => on passe à la suivante
-			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
 				return i;
 				
 			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){

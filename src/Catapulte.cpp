@@ -62,8 +62,8 @@ unsigned int Catapulte::getCaseSuppDegats(){
 int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
-		for(unsigned int i=positionActuelle; i<TAILLE_PLATEAU; i++){
-		std::cout<<"min : "<< (i>=(positionActuelle + getPorteeMin())) << " max : "<<(i<= (positionActuelle + getPorteeMax()))<<std::endl;
+		for(unsigned int i=positionActuelle; i<=TAILLE_PLATEAU; i++){
+		
 			//case vide => on passe à la suivante
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
@@ -72,7 +72,7 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 			else if((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)!=nullptr)&& (p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB)){
 				return positionActuelle+getPorteeMax();
 				
-			}else if ((p.getCase(i)==nullptr) && (i==BASE_B)){
+			}else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
 				return BASE_B;
 			}else if ((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)==nullptr) && ( positionActuelle+getPorteeMax()+1 ==BASE_B)){
 				return positionActuelle+getPorteeMax();
@@ -87,7 +87,7 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 			}
 			
 			//case vide => on passe à la suivante
-			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA && i>=getPorteeMin() && i<=getPorteeMax())){
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
 				return i;
 				
 			}
