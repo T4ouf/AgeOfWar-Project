@@ -6,6 +6,9 @@
 
 #include <iostream>
 
+
+extern std::string recapitulatifTour;
+
 Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : Entite(categorie->getVieMax(),equipe){
 
 	m_proprietaire=proprietaire;
@@ -36,8 +39,6 @@ bool Unite::Attaquer(Plateau_t& p){
 	}
 	else{
 
-		std::cout << "/////////\n/////////\nDANS LA FONCTION ATTAQUER POUR L'UNITE : " << m_nom << "\n/////////\n***********\n";
-
 		//Si c'est une case vide => c'est la base adverse
 		if(p.getCase(caseCible)==nullptr){
 
@@ -50,22 +51,28 @@ bool Unite::Attaquer(Plateau_t& p){
 
 				if(m_equipe==EquipeA){
 					tourAdverse = p.tourB;
+					recapitulatifTour += m_nom + " attaque la tour de l'équipe B\n";
 				}
 				else{
 					tourAdverse = p.tourA;
+					recapitulatifTour += m_nom + " attaque la tour de l'équipe A\n";
 				}
 				
+
 
 				//On lui fait subir des dégats et on stocke si la tour meurt ou non
 				bool mort = tourAdverse->subirDegats(m_categorie->getPuissance());
 
+
+
 				//si la tour est morte => on tue l'objet
 				if(mort){
 					tourAdverse->Mourir(p);
+					recapitulatifTour += "La tour est morte !\nFIN DE PARTIE !\n";
 				}
 
-					//L'attaque est un succès !
-					succesAttaque=true;
+				//L'attaque est un succès !
+				succesAttaque=true;
 			}
 			
 		}
@@ -75,11 +82,15 @@ bool Unite::Attaquer(Plateau_t& p){
 			//On récupère la cible adverse
 			Unite* cible = p.getCase(caseCible);
 
+			recapitulatifTour += m_nom + " attaque " + cible->getNom() + "\n";
+
 			//On lui fait subir des dégats et on stocke si la cible meurt ou non
 			bool mort = cible->subirDegats(m_categorie->getPuissance());
 
 			//si la cible est morte => on tue l'objet
 			if(mort){
+
+				recapitulatifTour += cible->getNom() + " meurt de l'attaque\n";
 
 				//On récupère l'argent de la mort de l'unité
 				m_proprietaire->MAJPieces(cible->getPrix()/2);
@@ -88,8 +99,10 @@ bool Unite::Attaquer(Plateau_t& p){
 				cible->Mourir(p);
 
 				//On verif la promotion de l'unité
-				if(m_categorie==Fantassin::getInstance()){
+				if(m_categorie==Fantassin::getInstance() && cible->getCategorie()==Fantassin::getInstance()){
+					std::string oldNom = m_nom;
 					Promotion();
+					recapitulatifTour += "Promotion de l'unite " + oldNom + ". Il devient : " + cible->getNom() + "\n";
 				}
 
 			}
@@ -108,7 +121,7 @@ bool Unite::Attaquer(Plateau_t& p){
 
 			//si c'est en dehors du tableau => on sort...
 			if(caseSupplementaire < 0 || caseSupplementaire > TAILLE_PLATEAU){
-				return false;
+				return succesAttaque;
 			}
 
 			//Si c'est une case vide => c'est la base adverse
@@ -121,11 +134,13 @@ bool Unite::Attaquer(Plateau_t& p){
 					Tour* tourAdverse;
 
 					if(m_equipe==EquipeA){
-						tourAdverse = p.tourB;
-					}
-					else{
-						tourAdverse = p.tourA;
-					}
+					tourAdverse = p.tourB;
+					recapitulatifTour += m_nom + " attaque la tour de l'équipe B (degat collateral)\n";
+				}
+				else{
+					tourAdverse = p.tourA;
+					recapitulatifTour += m_nom + " attaque la tour de l'équipe A (degat collateral)\n";
+				}
 
 
 					//On lui fait subir des dégats et on stocke si la tour meurt ou non
@@ -134,6 +149,7 @@ bool Unite::Attaquer(Plateau_t& p){
 					//si la tour est morte => on tue l'objet
 					if(mort){
 						tourAdverse->Mourir(p);
+						recapitulatifTour += "La tour est morte !\nFIN DE PARTIE !\n";
 					}
 
 					//L'attaque est un succès !
@@ -145,22 +161,28 @@ bool Unite::Attaquer(Plateau_t& p){
 				//On récupère la cible adverse
 				Unite* cible = p.getCase(caseCible);
 
+				recapitulatifTour += m_nom + " attaque (degat collateral) " + cible->getNom() + "\n";
+
 				//On lui fait subir des dégats et on stocke si la cible meurt ou non
 				bool mort = cible->subirDegats(m_categorie->getPuissance());
 
 				//si la cible est morte => on tue l'objet
 				if(mort){
 
+					recapitulatifTour += ColorerTexte(cible->getNom() + " meurt de l'attaque\n",GrasItaliqueSouligne,Rouge);
+
 					//On récupère l'argent de la mort de l'unité
 					m_proprietaire->MAJPieces(cible->getPrix()/2);
 					
+					//On verif la promotion de l'unité
+					if(m_categorie==Fantassin::getInstance() && cible->getCategorie()==Fantassin::getInstance()){
+						std::string oldNom = m_nom;
+						Promotion();
+						recapitulatifTour += "Promotion de l'unite " + oldNom + ". Il devient : " + cible->getNom() + "\n";
+					}
+
 					//on tue la cible
 					cible->Mourir(p);
-
-					//On verif la promotion de l'unité
-					if(m_categorie==Fantassin::getInstance()){
-						Promotion();
-					}
 
 				}
 
@@ -193,6 +215,8 @@ bool Unite::Deplacer(Plateau_t& p){
 			//Si la place est libre => on se déplace
 			if(p.getCase(getX()+1)==nullptr){
 
+				recapitulatifTour += m_nom + " se deplace de " + std::to_string(m_x) + " vers " + std::to_string(m_x+direction(m_equipe)) + "\n";
+
 				p.EnleveUnite(getX());
 				m_x += direction(m_equipe);
 				p.AjouteUnite(getX(),this);
@@ -216,6 +240,8 @@ bool Unite::Deplacer(Plateau_t& p){
 
 			//Si la place est libre => on se déplace
 			if(p.getCase(getX()-1)==nullptr){
+
+				recapitulatifTour += m_nom + " se deplace de " + std::to_string(m_x) + " vers " + std::to_string(m_x+direction(m_equipe)) + "\n";
 
 				p.EnleveUnite(getX());
 				m_x += direction(m_equipe);
@@ -298,7 +324,6 @@ bool Unite::Action2(Plateau_t& p){
 
 //L'unité effectue son action alternative
 bool Unite::ActionAlt(Plateau_t& p, bool SuccesAction1){
-
 
 	if(SuccesAction1){
 

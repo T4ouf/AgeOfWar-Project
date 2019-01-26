@@ -4,6 +4,20 @@
 #include "Plateau.hpp"
 
 
+#define Gras "1"
+#define Dim "2"
+#define Italique "3"
+#define Souligne "4"
+#define Inverse "7"
+
+#define GrasItalique "1;3"
+#define GrasSouligne "1;4"
+#define GrasInverse "1;7"
+#define SouligneInverse "4;7"
+
+#define GrasSouligneInvers "1;4;7"
+#define GrasItaliqueSouligne "1;3;4"
+
 //////////////////////////////////////////
 //            ENUM EnumEquipe			//
 //////////////////////////////////////////
@@ -35,18 +49,6 @@ enum EnumAction{
 //////////////////////////////////////////
 //         Enum Affichage texte			//
 //////////////////////////////////////////
-
-enum Police{
-	Gras = 1,
-	Souligne = 4,
-	Inverse = 7,
-
-	GrasSouligne = 14,
-	GrasInverse = 17,
-	SouligneInverse = 47,
-
-	GrasSouligneInvers = 147
-};
 
 enum Couleurs{
 	Noir = 30,
@@ -86,7 +88,7 @@ enum Couleurs{
 	Fond_BlancClair = 107
 };
 
-std::string ColorerTexte(const std::string& texte,int couleur,int type);
+std::string ColorerTexte(const std::string& texte,std::string type, Couleurs couleur);
 
 
 #define COULEUR_EQUIPE_A BleuClair

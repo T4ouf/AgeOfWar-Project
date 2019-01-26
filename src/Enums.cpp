@@ -56,7 +56,7 @@ std::string getNomEquipe(EnumEquipe e){
 //         Enum Affichage texte			//
 //////////////////////////////////////////
 
-std::string ColorerTexte(const std::string& texte,int couleur,int type){
+std::string ColorerTexte(const std::string& texte, std::string type, Couleurs couleur){
 
 	std::stringstream sstm;
 	sstm << "\033[" << type << ";" << couleur << "m" << texte << "\033[0m";

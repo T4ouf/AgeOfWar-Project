@@ -48,3 +48,4 @@ unsigned int tirage( unsigned int limite_min, unsigned int limite_max) {
 	
   	return (limite_min+(rand() % (limite_max+1-limite_min))) ;
 }
+

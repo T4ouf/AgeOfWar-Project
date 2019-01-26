@@ -149,13 +149,13 @@ std::string Plateau_t::toString(){
 
 				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
 				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_A);
-				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 3;
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 5;
 
 			}
 			else if(getCase(i)->getEquipe()==EquipeB){
 				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
 				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_B);
-				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 3;
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 5;
 			}
 
 		}
@@ -173,8 +173,10 @@ std::string Plateau_t::toString(){
 
 	std::stringstream res;
 
-	//res << deuxChateaux(6,chateau) << "\n\t   " << tirets << "\n\t   " << sstm.str() << "\n\t   " << tirets << '\n';
-	/*DebugLine : */res << "\n" << tirets << "\n" << sstm.str() << "\n" << tirets << '\n';
+	res << deuxChateaux(6,chateau) << "\n          " << ColorerTexte(std::to_string(100*tourA->getVie()/VIE_TOUR) + "%",GrasInverse,COULEUR_EQUIPE_A) << 
+								 "\t\t\t\t\t\t\t          " << ColorerTexte(std::to_string(100*tourB->getVie()/VIE_TOUR) +"%",GrasInverse,COULEUR_EQUIPE_B) << 
+									  "\n\t   " << tirets << "\n\t   " << sstm.str() << "\n\t   " << tirets << '\n';
+	/*DebugLine : /res << "\n" << tirets << "\n" << sstm.str() << "\n" << tirets << '\n';*/
 	return res.str();
 
 }
