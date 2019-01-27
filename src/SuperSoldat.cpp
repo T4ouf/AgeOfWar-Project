@@ -2,7 +2,10 @@
 #include "Enums.hpp"
 #include "Unite.hpp"
 
+//ID pour numeroté le nombre de super soldat
 unsigned int SuperSoldat::ID = 0;
+
+//SuperSoldat est un singleton
 SuperSoldat* SuperSoldat::instance=nullptr;
 
 SuperSoldat* SuperSoldat::getInstance()
@@ -20,6 +23,8 @@ SuperSoldat* SuperSoldat::getInstance()
 SuperSoldat::SuperSoldat(){
 
 }
+
+//destruction le singleton
 SuperSoldat::~SuperSoldat(){
     delete instance;
 }
@@ -55,21 +60,24 @@ unsigned int SuperSoldat::getPorteeMax() {
 	return 1;
 }
 
+// on verifie si on peut attaquer une case supplementaire
 unsigned int SuperSoldat::getCaseSuppDegats(){
 	return 0;
 }
 
+// on verifie si il y a des ennemis a porté, et on renvoie l'indice du premier
 int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
 
 		for(unsigned int i=positionActuelle; i<=TAILLE_PLATEAU; i++){
 		
-			//case vide => on passe à la suivante
+			//si la case n'est pas vide et dans la portée du supersoldat
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
 				
 			}
+			//si c'est une base a portée
 			else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
 				return BASE_B;
 			}
@@ -79,11 +87,12 @@ int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEqu
 
 		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
 	
+			//si on sort tu tableau, on a pas rencontré d'unité
 			if(((int)positionActuelle)-(int)getPorteeMax()<0){
 			return -1;
 			}
 			
-			//case vide => on passe à la suivante
+			
 			if((p.getCase(i)!=nullptr)  
 				&& (p.getCase(i)->getEquipe()==EquipeA )
 					&& i>=(positionActuelle - getPorteeMin()) 
@@ -99,7 +108,7 @@ int SuperSoldat::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEqu
 	return -1;
 }
 
-
+//on return le singleton vers lequel on peut evoluer
 Categorie* SuperSoldat::promotion(){
 	return SuperSoldat::getInstance();
 }
