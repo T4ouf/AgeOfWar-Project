@@ -4,7 +4,10 @@
 
 #include <iostream>
 
+//ID pour numeroté le nombre de catapulte
 unsigned int Catapulte::ID = 0;
+
+//Catapulte est un singleton
 Catapulte* Catapulte::instance=nullptr;
 
 Catapulte* Catapulte::getInstance()
@@ -20,6 +23,8 @@ Catapulte* Catapulte::getInstance()
 Catapulte::Catapulte(){
 	
 }
+
+//destruction le singleton
 Catapulte::~Catapulte(){
     delete instance;
 }
@@ -55,24 +60,29 @@ unsigned int Catapulte::getPorteeMax() {
 	return 3;
 }
 
+// on verifie si on peut attaquer une case supplementaire
 unsigned int Catapulte::getCaseSuppDegats(){
 	return 1;
 }
 
+// on verifie si il y a des ennemis a porté, et on renvoie l'indice du premier
 int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
 		for(unsigned int i=positionActuelle; i<=TAILLE_PLATEAU; i++){
 		
-			//case vide => on passe à la suivante
+			//si la case n'est pas vide et dans la portée de la catapulte
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
 				
 			}
+			// si une case plus loin que la portée est un ennemi, on attaque la case avant
 			else if((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)!=nullptr)&& (p.getCase(positionActuelle+getPorteeMax()+1)->getEquipe()==EquipeB)){
 				return positionActuelle+getPorteeMax();
 				
-			}else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
+			}
+			//si c'est une base a portée
+			else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
 				return BASE_B;
 			}else if ((positionActuelle+getPorteeMax()+1<=TAILLE_PLATEAU)&&(p.getCase(positionActuelle+getPorteeMax()+1)==nullptr) && ( positionActuelle+getPorteeMax()+1 ==BASE_B)){
 				return positionActuelle+getPorteeMax();
@@ -82,11 +92,12 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	else if (e==EquipeB){
 		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
 	
+			//si on sort tu tableau, on a pas rencontré d'unité
 			if(((int)positionActuelle)-(int)getPorteeMax()<0){
 			return -1;
 			}
 			
-			//case vide => on passe à la suivante
+			
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
 				return i;
 				
@@ -107,6 +118,7 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	return -1;
 }
 
+//on return le singleton vers lequel on peut evoluer
 Categorie* Catapulte::promotion(){
 	return Catapulte::getInstance();
 }
