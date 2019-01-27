@@ -108,7 +108,7 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	return -1;
 }
 
-//on return le singleton vers lequel on peut evoluer
+//on returne le singleton vers lequel on peut evoluer
 Categorie* Fantassin::promotion(){
 	return SuperSoldat::getInstance();
 }
