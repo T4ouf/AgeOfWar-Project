@@ -5,7 +5,10 @@
 
 #include <iostream>
 
+//ID pour numeroté le nombre de fantassin
 unsigned int Fantassin::ID = 0;
+
+//Fantassin est un singleton
 Fantassin* Fantassin::instance=nullptr;
 
 Fantassin* Fantassin::getInstance()
@@ -21,6 +24,8 @@ Fantassin* Fantassin::getInstance()
 Fantassin::Fantassin(){
 
 }
+
+//destruction le singleton
 Fantassin::~Fantassin(){
     delete instance;
 }
@@ -56,20 +61,23 @@ unsigned int Fantassin::getPorteeMax() {
 	return 1;
 }
 
+// on verifie si on peut attaquer des cases supplementaires
 unsigned int Fantassin::getCaseSuppDegats(){
 	return 0;
 }
 
+// on verifie si il y a des ennemis a porté, et on renvoie l'indice du premier
 int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
 		for(unsigned int i=positionActuelle; i<=TAILLE_PLATEAU; i++){
 			
-			//case vide => on passe à la suivante
+			//si la case n'est pas vide et dans la portée du fantassin
 			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeB && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax()))){
 				return i;
 				
 			}
+			//si c'est une base a portée
 			else if ((p.getCase(i)==nullptr) && (i==BASE_B) && i>=(positionActuelle + getPorteeMin()) && i<=(positionActuelle + getPorteeMax())){
 				return BASE_B;
 			}
@@ -79,11 +87,12 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		
 		
 		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax()-1; i--){
+			//si on sort tu tableau, on a pas rencontré d'unité
 			if(((int)positionActuelle)-(int)getPorteeMax()<0){
 			return -1;
 			}
 			
-			//case vide => on passe à la suivante
+			
 			if( (p.getCase(i)!=nullptr)  
 				&& (p.getCase(i)->getEquipe()==EquipeA )&& i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
 				return i;
@@ -99,6 +108,7 @@ int Fantassin::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 	return -1;
 }
 
+//on return le singleton vers lequel on peut evoluer
 Categorie* Fantassin::promotion(){
 	return SuperSoldat::getInstance();
 }
