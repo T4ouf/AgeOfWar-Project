@@ -5,6 +5,9 @@
 class Entite{
 
 protected:
+
+	friend struct Application;
+
 	unsigned int m_vie;
 	unsigned int m_x;
 	EnumEquipe m_equipe;

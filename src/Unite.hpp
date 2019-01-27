@@ -10,6 +10,8 @@ class Unite: public Entite{
 
 private:
 
+	friend struct Application;
+
 	EnumAction m_actions[2];
 	EnumAction m_actionAlternative;	//Correspond à l'action 3 du tableau => ne se déclenche (après l'action 2) que si l'action 1 est impossible
 

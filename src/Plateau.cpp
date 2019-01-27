@@ -4,15 +4,26 @@
 
 #include <sstream>
 
-void Plateau_t::Init(Tour* tourJ1, Tour* tourJ2){
+void Plateau_t::Init(Tour* tourJ1, Tour* tourJ2, bool first){
 
 	tourA = tourJ1;
 	tourB = tourJ2;
 
-	for(unsigned int i=0; i<=TAILLE_PLATEAU; i++){
-		//init le plateau avec des cases vides
-		casesUnite.push_back(nullptr);
+	//si c'est la premiere initialisation du plateau
+	if(first){
+
+		for(unsigned int i=0; i<=TAILLE_PLATEAU; i++){
+			//init le plateau avec des cases vides
+			casesUnite.push_back(nullptr);
+		}
 	}
+	else{
+		for(unsigned int i=0; i<=TAILLE_PLATEAU; i++){
+			//init le plateau avec des cases vides
+			casesUnite.at(i)=nullptr;
+		}
+	}
+	
 }
 
 bool Plateau_t::VerifOK(unsigned int numCase){
@@ -122,8 +133,9 @@ std::string Plateau_t::toString(){
 			}
 			else{
 				//c'est forcément une unité alliée sur la case de la base
-				sstm  << ColorerTexte(getCase(i)->getNom(),Gras,COULEUR_EQUIPE_A);
-				taille += getCase(i)->getNom().size();
+				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
+				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_A);
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 5;
 			}
 
 		}
@@ -134,8 +146,9 @@ std::string Plateau_t::toString(){
 				taille+=6;
 			}
 			else{
-				sstm  << ColorerTexte(getCase(i)->getNom(),Gras,COULEUR_EQUIPE_B);
-				taille += getCase(i)->getNom().size();
+				sstm  << ColorerTexte(getCase(i)->getNom() + "(" +
+				 std::to_string(100*getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()) + "%)",Gras,COULEUR_EQUIPE_B);
+				taille += getCase(i)->getNom().size() + std::to_string(getCase(i)->getVie()/getCase(i)->getCategorie()->getVieMax()).size() + 5;
 			}
 
 		}

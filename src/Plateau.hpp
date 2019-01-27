@@ -17,7 +17,7 @@ typedef struct Plateau{
 
 	std::vector<Unite*> casesUnite;
 
-	void Init(Tour* tourJ1, Tour* tourJ2);
+	void Init(Tour* tourJ1, Tour* tourJ2,bool first);
 	bool VerifOK(unsigned int numCase);
 
 	Unite* getCase(unsigned int numCase);

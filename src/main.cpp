@@ -20,6 +20,8 @@ std::string recapitulatifTour = "";
 
 int main(){
 
+	Application app;
+
 	std::cout << "\n\n" <<ColorerTexte("\n\t\t\tAGE OF WAR PROJECT\nEurydice Ruggieri\t\t-\t\tThomas von Ascheberg\n", Gras, Fond_NoirClair);
 
 	std::string reponse = "";
@@ -30,6 +32,11 @@ int main(){
 	std::string nomJ2="";
 	bool IAJ2 = false;
 
+	Joueur J1 = Joueur(EquipeA,"Joueur1",IAJ1);
+	Joueur J2= Joueur(EquipeB, "Joueur2",IAJ2);
+
+	Plateau_t plateau;	
+	plateau.Init(J1.refTour(),J2.refTour(),true);
 
 	while(reponse == ""){
 		std::cout << ColorerTexte("\n\nBienvenue dans Age of War !\nQue voulez vous faire ?", GrasSouligne,NoirClair) 
@@ -38,7 +45,7 @@ int main(){
 		std::getline(std::cin,reponse);
 
 		//si rien n'est rentré => on attend
-		if(reponse=="" ){
+		if(reponse==""){
 			std::cout << ColorerTexte("Entree invalide !\n",Gras, Fond_Rouge);
 			continue;
 		}
@@ -85,13 +92,32 @@ int main(){
 			    			break;
 			}
 
+
+			//On met les joueurs à jour avec les données correctes
+			J1.setNom(nomJ1);
+			J1.setIA(IAJ1);
+
+			J2.setNom(nomJ2);
+			J2.setIA(IAJ2);
+
 			//On vide le buffer cin
 			std::getline(std::cin,reponseIA);
 
 		}
 		//Chargement d'une partie
 		else if(toupper(reponse.at(0))=='C'){
-			//TODO 
+			std::string nomfichier="";
+			std::cout << "Veuillez rentrer le nom de la sauvegarde (sans l'extension) : ";
+			std::getline(std::cin,nomfichier);
+
+			bool OK = app.Charger(nomfichier,J1,J2,plateau);
+
+			//si il y a un echec lors du chargement => on repart au début
+			if(!OK){
+				reponse = "";
+				continue;
+			}
+
 		}
 		else{
 			//si rien n'est rentré => on attend une réponse valide !
@@ -101,19 +127,10 @@ int main(){
 		}
 
 	}
-	
 
+	app.Init();
 
-
-	Joueur J1 = Joueur(EquipeA,IAJ1);
-	Joueur J2= Joueur(EquipeB, IAJ2);
-
-	Plateau_t plateau;	
-	plateau.Init(J1.refTour(),J2.refTour());
-
-	Init();
-
-	while(!VerifFinPartie()){
+	while(!app.VerifFinPartie()){
 		
 		//On efface la console
 		//system("clear");
@@ -136,57 +153,118 @@ int main(){
 AfficheActions : 
 
 			//Puis on affiche l'état de la partie pour qu'il puisse avoir les infos à jour pour décider de son action
-			Affiche_Joueur1(nomJ1);
+			Affiche_Joueur1(J1.getNom());
 			std::cout << '\n' << plateau.toString();
 
 
-			std::string ActionUtilisateur = "";
-			std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Charger, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
-			std::getline(std::cin,ActionUtilisateur);
+			//si c'est une IA => on simule son comportement
+			if(J1.EstIA()){
+				int actionIA = tirage(0,2);
 
-			bool afficheMenuRecrue = false;
+				//On ne peut agir que si la case est libre
+				if(plateau.getCase(BASE_A)==nullptr){
+					
+					//Les recrues de l'IA sont aléatoires
+					//cependant s'il n'a pas l'argent nécéssaire, il essayera d'acheter une unité moins chère
 
-			//si rien n'est rentré => on attend
-			if(ActionUtilisateur==""){
-				ActionUtilisateur = "Attendre";
+					if(actionIA==0){
+						
+						bool OK = J1.recruter(plateau,Catapulte::getInstance());
+						if(!OK){
+							bool OK2 = J1.recruter(plateau,Archer::getInstance());
+
+							if(!OK2){
+								J1.recruter(plateau,Fantassin::getInstance());
+							}
+						}
+					}
+					else if(actionIA==1){
+						
+						bool OK = J1.recruter(plateau,Archer::getInstance());
+
+						if(!OK){
+							J1.recruter(plateau,Fantassin::getInstance());
+						}
+
+
+					}
+					else if(actionIA==2){
+						
+						J1.recruter(plateau,Fantassin::getInstance());
+
+					}
+				}					
 			}
+			//Sinon c'est un joueur humain
+			else{
+				std::string ActionUtilisateur = "";
+				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Charger, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
+				std::getline(std::cin,ActionUtilisateur);
 
-			switch(toupper(ActionUtilisateur.at(0))) {
-				case 'R' : 	afficheMenuRecrue = true;
-			    			break;
-			    case 'S' : 	//TODO;
-			    			break;
-			    case 'C' : 	//TODO;
-			    			break;
-			    case 'D' : 	std::cout << "\n\n" << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
-			    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
-			    			break;
-			    case 'A' :	break;
-			}
+				bool afficheMenuRecrue = false;
 
-			if(afficheMenuRecrue){
-				std::string commande = "";
-				std::cout << "\nEntrez le nom de l'unité que vous souhaitez recruter : ";
-
-				//Empeche de jouer plusieurs commandes en une fois
-				std::getline(std::cin,commande);
-
-				//si rien n'est rentré => on ne recrute pas
-				if(commande==""){
-					commande = " vide";
+				//si rien n'est rentré => on attend
+				if(ActionUtilisateur==""){
+					ActionUtilisateur = "Attendre";
 				}
 
-				switch(toupper(commande.at(0))) {
-					case 'F' : 	J1.recruter(plateau, Fantassin::getInstance());
-				    			break;
-				    case 'A' : 	J1.recruter(plateau, Archer::getInstance());
-				    			break;
-				    case 'C' : 	J1.recruter(plateau, Catapulte::getInstance());
-				    			break;
+				std::string repMenu2 = "";
+
+				switch(toupper(ActionUtilisateur.at(0))) {
+					case 'R' : 	{
+						afficheMenuRecrue = true;
+				   		break;
+				   	}
+				    case 'S' :{
+				     	std::cout << "Veuillez entrer le nom de la sauvegarde : ";
+		    			std::getline(std::cin,repMenu2);
+		    			app.Sauvegarder(repMenu2,J1,J2,plateau);
+		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+				    }
+
+				    case 'C' :{
+				     	std::string nomfichier="";
+						std::cout << "Veuillez rentrer le nom de la sauvegarde (sans l'extension) : ";
+						std::getline(std::cin,nomfichier);
+						if(!app.Charger(nomfichier,J1,J2,plateau)) goto AfficheActions; //façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+				    }
+
+				    case 'D' :{ 	
+				    	std::cout << "\n\n" << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
+		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+		    		}
+
+				    case 'A' : {break;}
 				}
-			}
+
+				if(afficheMenuRecrue){
+					std::string commande = "";
+					std::cout << "\nEntrez le nom de l'unité que vous souhaitez recruter : ";
+
+					//Empeche de jouer plusieurs commandes en une fois
+					std::getline(std::cin,commande);
+
+					//si rien n'est rentré => on ne recrute pas
+					if(commande==""){
+						commande = " vide";
+					}
+
+					switch(toupper(commande.at(0))) {
+						case 'F' : 	J1.recruter(plateau, Fantassin::getInstance());
+					    			break;
+					    case 'A' : 	J1.recruter(plateau, Archer::getInstance());
+					    			break;
+					    case 'C' : 	J1.recruter(plateau, Catapulte::getInstance());
+					    			break;
+					}
+				}
+			}	
 
 		}
+		//Joueur 2
 		else{
 
 			//Gain de 8 pièces en début de tour
@@ -198,9 +276,10 @@ AfficheActions :
 			//DEBUGstd::cout << "\n\nTour du J2 : " << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
 
 			//Puis on affiche l'état de la partie pour qu'il puisse avoir les infos à jour pour décider de son action
-			Affiche_Joueur2(nomJ2);
+			Affiche_Joueur2(J2.getNom());
 			std::cout << '\n' << plateau.toString();
 			
+			//si c'est une IA => on simule son comportement
 			if(J2.EstIA()){
 				int actionIA = tirage(0,2);
 
@@ -219,10 +298,7 @@ AfficheActions :
 							if(!OK2){
 								J2.recruter(plateau,Fantassin::getInstance());
 							}
-
 						}
-
-
 					}
 					else if(actionIA==1){
 						
@@ -231,20 +307,93 @@ AfficheActions :
 						if(!OK){
 							J2.recruter(plateau,Fantassin::getInstance());
 						}
-
-
 					}
 					else if(actionIA==2){
-						
 						J2.recruter(plateau,Fantassin::getInstance());
-
 					}
 				}					
+			}
+			//si c'est un joueur humain
+			else{
+				std::string ActionUtilisateur = "";
+				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Charger, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
+				std::getline(std::cin,ActionUtilisateur);
+
+				bool afficheMenuRecrue = false;
+
+				//si rien n'est rentré => on attend
+				if(ActionUtilisateur==""){
+					ActionUtilisateur = "Attendre";
+				}
+
+				std::string repMenu2 = "";
+
+				//switch sur l'action voulue
+				switch(toupper(ActionUtilisateur.at(0))) {
+					case 'R' : 	{
+						afficheMenuRecrue = true;
+				   		break;
+				   	}
+				    case 'S' :{
+				     	std::cout << "Veuillez entrer le nom de la sauvegarde : ";
+		    			std::getline(std::cin,repMenu2);
+		    			app.Sauvegarder(repMenu2,J1,J2,plateau);
+		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+				    }
+
+				    case 'C' :{
+				     	std::string nomfichier="";
+						std::cout << "Veuillez rentrer le nom de la sauvegarde (sans l'extension) : ";
+						std::getline(std::cin,nomfichier);
+						if(!app.Charger(nomfichier,J1,J2,plateau)) goto AfficheActions; //façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+				    }
+
+				    case 'D' :{ 	
+				    	std::cout << "\n\n" << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
+		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
+		    			break;
+		    		}
+
+				    case 'A' : {break;}
+				}
+
+				if(afficheMenuRecrue){
+					std::string commande = "";
+					std::cout << "\nEntrez le nom de l'unité que vous souhaitez recruter : ";
+
+					//Empeche de jouer plusieurs commandes en une fois
+					std::getline(std::cin,commande);
+
+					//si rien n'est rentré => on ne recrute pas
+					if(commande==""){
+						commande = " vide";
+					}
+
+					switch(toupper(commande.at(0))) {
+						case 'F' : 	J2.recruter(plateau, Fantassin::getInstance());
+					    			break;
+					    case 'A' : 	J2.recruter(plateau, Archer::getInstance());
+					    			break;
+					    case 'C' : 	J2.recruter(plateau, Catapulte::getInstance());
+					    			break;
+					}
+				}
+
 			}
 		}
 
 		//et on passe au tour suivant
 		NumTour++;
+	}
+
+	//Message de fin de partie 
+	if(plateau.tourA->getVie()==0){
+		std::cout << ColorerTexte( "\n" + nomJ2 + "gagne la partie !\n",GrasItaliqueSouligne,Fond_NoirClair);
+	}
+	else if(plateau.tourB->getVie()==0){
+		std::cout << ColorerTexte( "\n" + nomJ1 + "gagne la partie !\n",GrasItaliqueSouligne,Fond_NoirClair);
 	}
 
 	return 0;

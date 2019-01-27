@@ -3,11 +3,13 @@
 #include "SuperSoldat.hpp"
 #include "Catapulte.hpp"
 #include "Joueur.hpp"
+#include "Application.hpp"
 
 #include <iostream>
 
 
 extern std::string recapitulatifTour;
+
 
 Unite::Unite(Categorie* categorie, EnumEquipe equipe, Joueur* proprietaire) : Entite(categorie->getVieMax(),equipe){
 

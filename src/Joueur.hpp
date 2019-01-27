@@ -15,16 +15,20 @@ class Joueur{
 
 private :
 
-    EnumEquipe m_equipe;
-    std::vector<Unite*> m_listeUnite;
-    Tour m_tour;
+  friend struct Application;
 
-    unsigned int m_piecesOr;
-    bool m_ia;
+  EnumEquipe m_equipe;
+
+  std::vector<Unite*> m_listeUnite;
+  Tour m_tour;
+
+  unsigned int m_piecesOr;
+  std::string m_nom;
+  bool m_ia;
 
 public:
 
-	Joueur(EnumEquipe equipe, bool IA);
+	Joueur(EnumEquipe equipe, std::string nom ,bool IA);
 	~Joueur();
 	
   bool recruter(Plateau_t& p, Categorie* c);
@@ -33,8 +37,12 @@ public:
 
   bool EstIA(){return m_ia;};
   unsigned int getArgent(){return m_piecesOr;}
+  std::string getNom(){return m_nom;}
   Tour getTour() const {return m_tour;}
   Tour* refTour(){return &m_tour;}
+
+  void setIA(bool ia){ m_ia = ia; }
+  void setNom(std::string nom){ m_nom = nom; }
 
   //Faire jouer le tour de ses unités
   void  Jouer(Plateau_t &p);

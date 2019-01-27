@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Joueur::Joueur(EnumEquipe equipe, bool IA) : m_equipe(equipe), m_tour(Tour(equipe)), m_piecesOr(OR_INITIAL), m_ia(IA){
+Joueur::Joueur(EnumEquipe equipe, std::string nom, bool IA) : m_equipe(equipe), m_tour(Tour(equipe)), m_piecesOr(OR_INITIAL), m_nom(nom), m_ia(IA){
 
 }
 Joueur::~Joueur(){
