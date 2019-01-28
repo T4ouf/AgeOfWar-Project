@@ -389,6 +389,9 @@ AfficheActionsJ2 :
 	else if(plateau.tourB->getVie()==0){
 		std::cout << ColorerTexte( "\n" + nomJ1 + "gagne la partie !\n",GrasItaliqueSouligne,Fond_NoirClair);
 	}
+	else if(NumTour>=TOURS_MAX){
+		std::cout << ColorerTexte( "\nFin du jeu ! Egalite !\n",GrasItaliqueSouligne,Fond_NoirClair);
+	}
 
 	return 0;
 
