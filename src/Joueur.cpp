@@ -55,7 +55,8 @@ void Joueur::EnleveUnite(Unite* u){
 	}
 }
 
-//MAj du nb de piece du joueur
+
+//MAJ du nb de piece du joueur
 void Joueur::MAJPieces(int pieces){
 	if((int)m_piecesOr >= -pieces){
 		m_piecesOr+=pieces;
@@ -90,6 +91,8 @@ void  Joueur::Jouer(Plateau_t &p){
 	//On fait jouer chaque unité par ordre croissant de création (Phase d'action 2)
 	for(size_t i = 0; i<m_listeUnite.size();i++){
 		Unite* unite = m_listeUnite.at(i);
+		unite->Action2(p);
+
 	}
 
 	//On fait jouer chaque unité par ordre croissant de création (Phase d'action 3)
