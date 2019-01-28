@@ -40,6 +40,9 @@ public:
 	virtual Categorie* promotion()=0;
 	
 	virtual std::string genNom() = 0; 
+
+	//methode pour reset l'id
+	virtual void resetID() = 0;
 	
 
 

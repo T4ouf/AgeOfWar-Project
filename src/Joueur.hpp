@@ -26,6 +26,8 @@ private :
   std::string m_nom;
   bool m_ia;
 
+  bool recruter(Plateau_t& p, Categorie* c, unsigned int position);
+
 public:
 
 	Joueur(EnumEquipe equipe, std::string nom ,bool IA);

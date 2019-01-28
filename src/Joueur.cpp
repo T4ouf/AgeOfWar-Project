@@ -27,6 +27,21 @@ bool Joueur::recruter(Plateau_t& p, Categorie* c){
 	return false;
 }
 
+//recrutement gratuit pour le chargement d'une partie
+bool Joueur::recruter(Plateau_t& p, Categorie* c, unsigned int position){
+
+	if(p.getCase(position)==nullptr){
+
+		Unite* u = new Unite(c, m_equipe, this);
+		m_listeUnite.push_back(u);
+		p.AjouteUnite(position,u);
+
+		return true;
+	}
+	return false;
+
+}
+
 void Joueur::EnleveUnite(Unite* u){
 
 	unsigned int i =0;
@@ -40,7 +55,7 @@ void Joueur::EnleveUnite(Unite* u){
 	}
 }
 
-
+//MAj du nb de piece du joueur
 void Joueur::MAJPieces(int pieces){
 	if((int)m_piecesOr >= -pieces){
 		m_piecesOr+=pieces;
@@ -75,8 +90,6 @@ void  Joueur::Jouer(Plateau_t &p){
 	//On fait jouer chaque unité par ordre croissant de création (Phase d'action 2)
 	for(size_t i = 0; i<m_listeUnite.size();i++){
 		Unite* unite = m_listeUnite.at(i);
-		unite->Action2(p);
-
 	}
 
 	//On fait jouer chaque unité par ordre croissant de création (Phase d'action 3)

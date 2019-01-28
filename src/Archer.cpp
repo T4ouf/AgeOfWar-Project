@@ -68,7 +68,7 @@ unsigned int Archer::getCaseSuppDegats(){
 	return 0;
 }
 
-// on verifie si il y a des ennemis a porté, et on renvoie l'indice du premier
+// on verifie si il y a des ennemis a portée, et on renvoie l'indice du premier
 int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
@@ -96,7 +96,7 @@ int Archer::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e
 			}
 			
 			
-			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMax()) && i<=(positionActuelle -getPorteeMin())){
 				return i;
 				
 			}else if ((p.getCase(i)==nullptr) && (i==BASE_A)){
@@ -119,3 +119,7 @@ std::string Archer::genNom(){
 	std::string nom = "A"+std::to_string(ID);
 	return nom;
 }
+
+
+//methode pour reset l'id
+void Archer::resetID(){ID=0;}

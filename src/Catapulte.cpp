@@ -65,7 +65,7 @@ unsigned int Catapulte::getCaseSuppDegats(){
 	return 1;
 }
 
-// on verifie si il y a des ennemis a porté, et on renvoie l'indice du premier
+// on verifie si il y a des ennemis a portée, et on renvoie l'indice du premier
 int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquipe e){
 
 	if (e==EquipeA){
@@ -90,18 +90,18 @@ int Catapulte::verifPortee(Plateau_t p, unsigned int positionActuelle, EnumEquip
 		}
 	}
 	else if (e==EquipeB){
-		for(unsigned int i=positionActuelle; (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
+		for(int i=(int)positionActuelle-(int)getPorteeMin(); (int)i>=((int)positionActuelle)-(int)getPorteeMax(); i--){
 	
 			//si on sort tu tableau, on a pas rencontré d'unité
 			if(((int)positionActuelle)-(int)getPorteeMax()<0){
 			return -1;
 			}
 			
-			
-			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(positionActuelle - getPorteeMin()) && i<=(positionActuelle -getPorteeMax())){
+			if((p.getCase(i)!=nullptr)  && (p.getCase(i)->getEquipe()==EquipeA) && i>=(int)(positionActuelle - getPorteeMax()) && i<=(int)(positionActuelle -getPorteeMin())){
 				return i;
 				
 			}
+			//On cherche pour d'éventuel dégat collatéral
 			else if( (((int)positionActuelle-(int)getPorteeMax()-1)>=0)
 			&&(p.getCase((int)positionActuelle-(int)getPorteeMax()-1)!=nullptr)
 			&& (p.getCase((int)positionActuelle-(int)getPorteeMax()-1)->getEquipe()==EquipeA)){
@@ -128,3 +128,6 @@ std::string Catapulte::genNom(){
 	std::string nom = "C"+std::to_string(ID);
 	return nom;
 }
+
+//methode pour reset l'id
+void Catapulte::resetID(){ID=0;}

@@ -38,6 +38,8 @@ int main(){
 	Plateau_t plateau;	
 	plateau.Init(J1.refTour(),J2.refTour(),true);
 
+	bool chargement = false; //Indique si l'on a effectué un chargement à l'instant (pout éviter de regagner 8 pièces)
+
 	while(reponse == ""){
 		std::cout << ColorerTexte("\n\nBienvenue dans Age of War !\nQue voulez vous faire ?", GrasSouligne,NoirClair) 
 				  << "\n\n-Charger une partie " << ColorerTexte("(Charger)", Dim, Vert) << "\n-Demarrer une nouvelle partie " << ColorerTexte("(Demarrer)\n\n", Dim, Vert);
@@ -118,6 +120,8 @@ int main(){
 				continue;
 			}
 
+			chargement=true;
+
 		}
 		else{
 			//si rien n'est rentré => on attend une réponse valide !
@@ -144,11 +148,14 @@ int main(){
 
 		if((NumTour%2)==0){
 
-			//Gain de 8 pièces en début de tour
-			J1.MAJPieces(8);
+			if(!chargement){
+				//Gain de 8 pièces en début de tour
+				J1.MAJPieces(8);
 
-			//Le joueur fait jouer ses unités
-			J1.Jouer(plateau);
+				//Le joueur fait jouer ses unités
+				J1.Jouer(plateau);
+			}
+			
 
 AfficheActions : 
 
@@ -198,7 +205,7 @@ AfficheActions :
 			//Sinon c'est un joueur humain
 			else{
 				std::string ActionUtilisateur = "";
-				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Charger, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
+				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
 				std::getline(std::cin,ActionUtilisateur);
 
 				bool afficheMenuRecrue = false;
@@ -220,14 +227,6 @@ AfficheActions :
 		    			std::getline(std::cin,repMenu2);
 		    			app.Sauvegarder(repMenu2,J1,J2,plateau);
 		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
-		    			break;
-				    }
-
-				    case 'C' :{
-				     	std::string nomfichier="";
-						std::cout << "Veuillez rentrer le nom de la sauvegarde (sans l'extension) : ";
-						std::getline(std::cin,nomfichier);
-						if(!app.Charger(nomfichier,J1,J2,plateau)) goto AfficheActions; //façon la plus simple de repartir à l'affichage juste au dessus
 		    			break;
 				    }
 
@@ -267,18 +266,19 @@ AfficheActions :
 		//Joueur 2
 		else{
 
-			//Gain de 8 pièces en début de tour
-			J2.MAJPieces(8);
+			if(!chargement){
+				//Gain de 8 pièces en début de tour
+				J2.MAJPieces(8);
 
-			//Le joueur fait jouer ses unités 
-			J2.Jouer(plateau);
+				//Le joueur fait jouer ses unités
+				J2.Jouer(plateau);
+			}
 			
-			//DEBUGstd::cout << "\n\nTour du J2 : " << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
-
+AfficheActionsJ2 : 
 			//Puis on affiche l'état de la partie pour qu'il puisse avoir les infos à jour pour décider de son action
 			Affiche_Joueur2(J2.getNom());
 			std::cout << '\n' << plateau.toString();
-			
+
 			//si c'est une IA => on simule son comportement
 			if(J2.EstIA()){
 				int actionIA = tirage(0,2);
@@ -316,7 +316,7 @@ AfficheActions :
 			//si c'est un joueur humain
 			else{
 				std::string ActionUtilisateur = "";
-				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Charger, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
+				std::cout << "\nQue voulez vous faire " << ColorerTexte("(Recruter, Sauvegarder, Attendre, Detail du tour en cours)",Dim, VertClair) << " ? ";
 				std::getline(std::cin,ActionUtilisateur);
 
 				bool afficheMenuRecrue = false;
@@ -338,21 +338,13 @@ AfficheActions :
 				     	std::cout << "Veuillez entrer le nom de la sauvegarde : ";
 		    			std::getline(std::cin,repMenu2);
 		    			app.Sauvegarder(repMenu2,J1,J2,plateau);
-		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
-		    			break;
-				    }
-
-				    case 'C' :{
-				     	std::string nomfichier="";
-						std::cout << "Veuillez rentrer le nom de la sauvegarde (sans l'extension) : ";
-						std::getline(std::cin,nomfichier);
-						if(!app.Charger(nomfichier,J1,J2,plateau)) goto AfficheActions; //façon la plus simple de repartir à l'affichage juste au dessus
+		    			goto AfficheActionsJ2;		//façon la plus simple de repartir à l'affichage juste au dessus
 		    			break;
 				    }
 
 				    case 'D' :{ 	
 				    	std::cout << "\n\n" << ColorerTexte(recapitulatifTour, Gras, Fond_NoirClair) << '\n';
-		    			goto AfficheActions;		//façon la plus simple de repartir à l'affichage juste au dessus
+		    			goto AfficheActionsJ2;		//façon la plus simple de repartir à l'affichage juste au dessus
 		    			break;
 		    		}
 
@@ -383,6 +375,8 @@ AfficheActions :
 
 			}
 		}
+
+		chargement = false; //on a fini le chargement
 
 		//et on passe au tour suivant
 		NumTour++;

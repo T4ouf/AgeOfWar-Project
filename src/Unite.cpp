@@ -104,7 +104,7 @@ bool Unite::Attaquer(Plateau_t& p){
 				if(m_categorie==Fantassin::getInstance() && cible->getCategorie()==Fantassin::getInstance()){
 					std::string oldNom = m_nom;
 					Promotion();
-					recapitulatifTour += "Promotion de l'unite " + oldNom + ". Il devient : " + cible->getNom() + "\n";
+					recapitulatifTour += "Promotion de l'unite " + oldNom + ". Il devient : " + m_nom + "\n";
 				}
 
 			}
@@ -127,10 +127,10 @@ bool Unite::Attaquer(Plateau_t& p){
 			}
 
 			//Si c'est une case vide => c'est la base adverse
-			if(p.getCase(caseCible)==nullptr){
+			if(p.getCase(caseSupplementaire)==nullptr){
 
 				//si c'est bien une tour que l'on attaque (éviter le cas d'attaque d'une case vide avec la catapulte)
-				if(caseCible == positionTourAdverse(m_equipe)){
+				if(caseSupplementaire == positionTourAdverse(m_equipe)){
 
 					//On récupère la base adverse
 					Tour* tourAdverse;
@@ -161,7 +161,7 @@ bool Unite::Attaquer(Plateau_t& p){
 			}
 			else{
 				//On récupère la cible adverse
-				Unite* cible = p.getCase(caseCible);
+				Unite* cible = p.getCase(caseSupplementaire);
 
 				recapitulatifTour += m_nom + " attaque (degat collateral) " + cible->getNom() + "\n";
 
@@ -171,7 +171,7 @@ bool Unite::Attaquer(Plateau_t& p){
 				//si la cible est morte => on tue l'objet
 				if(mort){
 
-					recapitulatifTour += ColorerTexte(cible->getNom() + " meurt de l'attaque\n",GrasItaliqueSouligne,Rouge);
+					recapitulatifTour += cible->getNom() + " meurt de l'attaque\n";
 
 					//On récupère l'argent de la mort de l'unité
 					m_proprietaire->MAJPieces(cible->getPrix()/2);
@@ -268,6 +268,10 @@ bool Unite::Promotion(){
 	}
 	else{
 		m_categorie=m_categorie->promotion();
+		m_actions[0]=m_categorie->getAction1();
+		m_actions[1]=m_categorie->getAction2();
+
+		m_actionAlternative=m_categorie->getActionAlt();
 		m_nom = m_categorie->genNom();
 		return true;
 	}

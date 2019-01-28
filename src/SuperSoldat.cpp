@@ -119,3 +119,6 @@ std::string SuperSoldat::genNom(){
 	std::string nom = "S"+std::to_string(ID);
 	return nom;
 }
+
+//methode pour reset l'id
+void SuperSoldat::resetID(){ID=0;}

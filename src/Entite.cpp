@@ -15,7 +15,7 @@ EnumEquipe Entite::getEquipe(){
 //renvoit vrai si l'entite meurt après avoir subi les dégats
 bool Entite::subirDegats(unsigned int degats){
 
-    if(degats>m_vie){
+    if(degats>=m_vie){
         m_vie=0;
         return true;
     }

@@ -38,4 +38,7 @@ public :
 	Categorie* promotion() override;
 	std::string genNom() override;
 
+	//methode pour reset l'id
+	void resetID() override;
+
 };

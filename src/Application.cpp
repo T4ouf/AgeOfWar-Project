@@ -67,23 +67,24 @@ void Application::Sauvegarder(std::string nomFichier, Joueur& J1, Joueur& J2, Pl
 
 	//Ici on sauvegarde selon un format que l'on défini nous même
 
+	plateau=plateau;
+
 	std::stringstream s;
-	s << (int)NumTour-1 << '\n';
-	s <<  J1.m_nom << " " << J1.m_piecesOr << " " << J1.m_ia << " " << J1.m_tour.getVie() <<" \n";
-	s <<  J2.m_nom << " " << J2.m_piecesOr << " " << J2.m_ia << " " << J2.m_tour.getVie() <<" \n";
+	s << NumTour << '\n';
+	s <<  J1.m_nom << " " << J1.m_piecesOr << " " << J1.m_ia << " " << J1.m_tour.getVie() << " " << J1.m_listeUnite.size() <<"\n";
 
+	for(size_t i =0; i<J1.m_listeUnite.size();i++){
+		Unite* unite = J1.m_listeUnite.at(i);
+		s << unite->getNom() << " " << unite->getVie() << " " << unite->getEquipe() << " " << unite->getX() << "\n";
+	}
 
-	for(size_t i=0; i<=TAILLE_PLATEAU;i++){
+	s << "\n";
 
-		if(plateau.getCase(i)==nullptr){
-			s <<"vide\n";
-		}
-		else{
-			Unite* unite = plateau.getCase(i);
-			s << unite->getNom() << " " << unite->getVie() << " " << unite->getEquipe() << " \n";
-		}
+	s <<  J2.m_nom << " " << J2.m_piecesOr << " " << J2.m_ia << " " << J2.m_tour.getVie() << " " << J2.m_listeUnite.size() <<"\n";
 
-
+	for(size_t i =0; i<J2.m_listeUnite.size();i++){
+		Unite* unite = J2.m_listeUnite.at(i);
+		s << unite->getNom() << " " << unite->getVie() << " " << unite->getEquipe() << " " << unite->getX() << "\n";
 	}
 
 	//Creation du fichier.txt (on l'efface s'il existe déjà (pour éviter les erreurs))
@@ -98,7 +99,6 @@ bool Application::Charger(std::string nomFichier, Joueur& J1, Joueur& J2, Platea
 
 	std::ifstream f(nomFichier+".lol", std::ios::in);        //On ouvre le fichier de sauvegarde en mode lecture
 
-	f >> NumTour;	//On met le tour à la bonne valeur
 
     if (f){                                          //Si on a réussi à ouvrir le fichier...
         std::cout << "Ouverture du fichier reussie !\n"; //On le dit
@@ -108,83 +108,88 @@ bool Application::Charger(std::string nomFichier, Joueur& J1, Joueur& J2, Platea
         return false;
     }
 
+
+
+    //On reinitialise le plateau
+    plateau.Init(J1.refTour(), J2.refTour(),false);
+
+	f >> NumTour;	//On met le tour à la bonne valeur
+
     f >> J1.m_nom;     				// la 1ere valeur est le nom du joueur
     f >> J1.m_piecesOr;            	// la 2e valeur est l'argent du joueur
     f >> J1.m_ia;            		// la 3e valeur est le booléen indiquant si le joueur est une IA
     f >> J1.m_tour.m_vie;			// la 4e valeur représente la vie de la tour
+    size_t nbUnit = 0;
+   	f >> nbUnit;
+
+    for(size_t i=0; i<nbUnit;i++){
+    	std::string nom = "";
+    	f >> nom;
+
+		unsigned int vie = 0;
+		f >> vie;
+		int e;	//représente la valeur de l'énum de l'équipe
+		f >> e;
+
+		unsigned int x = 0;
+		f >> x;
+
+		Categorie* c;
+
+		switch(toupper(nom.at(0))) {
+			case 'F' : 	c=Fantassin::getInstance();
+		    			break;
+		    case 'A' :	c=Archer::getInstance();
+		    			break;
+		    case 'C' : 	c=Catapulte::getInstance();
+		    			break;
+		    case 'S' : 	c=SuperSoldat::getInstance();
+		    			break;
+		}
+
+		J1.recruter(plateau,c, x);
+		J1.m_listeUnite.at(i)->m_x=x;
+
+    }
+
 
     f >> J2.m_nom;     				// la 1ere valeur est le nom du joueur
     f >> J2.m_piecesOr;            	// la 2e valeur est l'argent du joueur
     f >> J2.m_ia;            		// la 3e valeur est le booléen indiquant si le joueur est une IA
     f >> J2.m_tour.m_vie;			// la 4e valeur représente la vie de la tour
+	size_t nbUnit2 = 0;
+   	f >> nbUnit2;
 
-    //On reinitialise le plateau
-    plateau.Init(J1.refTour(), J2.refTour(),false);
+    for(size_t i=0; i<nbUnit2;i++){
+    	std::string nom = "";
 
-    for(size_t i=0; i<=TAILLE_PLATEAU;i++){
+    	f >> nom;
 
-    	std::string buffer = "";
+		unsigned int vie = 0;
+		f >> vie;
+		int e;	//représente la valeur de l'énum de l'équipe
+		f >> e;
 
-    	f >> buffer;
+		unsigned int x = 0;
+		f >> x;
 
-		if(buffer=="vide"){
-			continue;
-		}
-		else{
+		Categorie* c;
 
-			std::string nom = buffer;
-			unsigned int vie = 0;
-			f >> vie;
-			int e;	//représente la valeur de l'énum de l'équipe
-			f >> e;
-
-			Categorie* c;
-
-			switch(toupper(nom.at(0))) {
-				case 'F' : 	c=Fantassin::getInstance();
-			    			break;
-			    case 'A' :	c=Archer::getInstance();
-			    			break;
-			    case 'C' : 	c=Catapulte::getInstance();
-			    			break;
-			    case 'S' : 	c=SuperSoldat::getInstance();
-			    			break;
-			}
-
-			if(e==EquipeA){
-				
-				//On crée dynamiquement l'unité (en lui remplissant les attributs comme il faut)
-				Unite* unite = new Unite(c,EquipeA,&J1);
-				unite->m_x = i;
-				unite->m_vie = vie;
-
-				//On l'insère au début de la liste (pour garder l'ordre de création des unités)
-				J1.m_listeUnite.insert(J1.m_listeUnite.begin(),unite);
-
-				//On actualise le plateau
-				plateau.casesUnite.at(i)=unite;
-			}
-			else if(e==EquipeB){
-
-				//On crée dynamiquement l'unité (en lui remplissant les attributs comme il faut)
-				Unite* unite = new Unite(c,EquipeB,&J2);
-				unite->m_x = i;
-				unite->m_vie = vie;
-
-				//On l'insère en fin de la liste (pour garder l'ordre de création des unités)
-				J1.m_listeUnite.push_back(unite);
-
-				//On actualise le plateau
-				plateau.casesUnite.at(i)=unite;
-			}
-
+		switch(toupper(nom.at(0))) {
+			case 'F' : 	c=Fantassin::getInstance();
+		    			break;
+		    case 'A' :	c=Archer::getInstance();
+		    			break;
+		    case 'C' : 	c=Catapulte::getInstance();
+		    			break;
+		    case 'S' : 	c=SuperSoldat::getInstance();
+		    			break;
 		}
 
-
-	}
-
-	std::cout<<"J1 : " << J1.getNom() << "Unite : " << J1.m_listeUnite.at(0)->getNom();
-
+		J2.recruter(plateau,c, x);
+		J2.m_listeUnite.at(i)->m_x=x;
+    }
+    
     f.close(); //on ferme le fichier
 
     return true;

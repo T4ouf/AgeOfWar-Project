@@ -118,3 +118,7 @@ std::string Fantassin::genNom(){
 	std::string nom = "F"+std::to_string(ID);
 	return nom;
 }
+
+
+//methode pour reset l'id
+void Fantassin::resetID(){ID=0;}
